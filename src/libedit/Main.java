@@ -4,14 +4,14 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 import helpers.Console;
-import libedit.objects.EagleDoc;
-import libedit.objects.Layers;
-import libedit.objects.Pkg;
+import libedit.containers.EagleDoc;
+import libedit.containers.Pkg;
+import libedit.enums.Layers;
 
 public class Main {
 
     public static void main(String[] args) {
-        createDoc();
+        // createDoc();
         LibraryParser.parseXML();
 
     }
@@ -41,6 +41,7 @@ public class Main {
         float padHeight = Float.parseFloat(Console.getString());
         Console.pln("\nPad width: ");
         float padWidth = Float.parseFloat(Console.getString());
+
         Console.pln("\nPad pitch: ");
         float pitch = Float.parseFloat(Console.getString());
         Console.pln("\nOverall pad span: ");

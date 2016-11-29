@@ -7,27 +7,26 @@ import libedit.abstractobjects.EagleObj;
 import libedit.enums.Rot;
 import libedit.enums.Rot.Rotation;
 
-/**
- * @author Michael
- *
- */
-public class SMD extends EagleObj {
+public class Pin extends EagleObj {
 
-    private String   name;
-    private float    x;
-    private float    y;
-    private float    dx;
-    private float    dy;
-    private int      layer;
-    private Rotation rot;
+    String    name;
+    float     x, y, length;
+    Direction dir;
+    int       swapLevel;
+    Rotation  rot;
 
-    public SMD(String name, float x, float y, float dx, float dy, int layer, Rotation rot) {
+    public enum Direction {
+        pas, pwr;
+    }
+
+    public Pin(String name, float x, float y, float length, Direction dir, int swapLevel, Rotation rot) {
+        super();
         this.name = name;
         this.x = x;
         this.y = y;
-        this.dx = dx;
-        this.dy = dy;
-        this.layer = layer;
+        this.length = length;
+        this.dir = dir;
+        this.swapLevel = swapLevel;
         this.rot = rot;
     }
 
@@ -55,28 +54,28 @@ public class SMD extends EagleObj {
         this.y = y;
     }
 
-    public float getDx() {
-        return dx;
+    public float getLength() {
+        return length;
     }
 
-    public void setDx(float dx) {
-        this.dx = dx;
+    public void setLength(float length) {
+        this.length = length;
     }
 
-    public float getDy() {
-        return dy;
+    public Direction getDir() {
+        return dir;
     }
 
-    public void setDy(float dy) {
-        this.dy = dy;
+    public void setDir(Direction dir) {
+        this.dir = dir;
     }
 
-    public int getLayer() {
-        return layer;
+    public int getSwapLevel() {
+        return swapLevel;
     }
 
-    public void setLayer(int layer) {
-        this.layer = layer;
+    public void setSwapLevel(int swapLevel) {
+        this.swapLevel = swapLevel;
     }
 
     public Rotation getRot() {
@@ -89,7 +88,8 @@ public class SMD extends EagleObj {
 
     @Override
     public int getPriority() {
-        return Priority.SMD;
+        // TODO Auto-generated method stub
+        return 0;
     }
 
     @Override
@@ -98,26 +98,34 @@ public class SMD extends EagleObj {
             name = xml.getAttributeValue("name");
             x = xml.getAttribute("x").getFloatValue();
             y = xml.getAttribute("y").getFloatValue();
-            dx = xml.getAttribute("dx").getFloatValue();
-            dy = xml.getAttribute("dy").getFloatValue();
-            layer = xml.getAttribute("layer").getIntValue();
+            dir = parseDir(xml.getAttributeValue("direction"));
+            swapLevel = xml.getAttribute("swaplevel").getIntValue();
             rot = Rot.parseRotation(xml.getAttributeValue("rot"));
         } catch (DataConversionException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
     }
 
     @Override
     public Element toXML() {
-        Element xml = new Element("smd");
+        Element xml = new Element("pin");
         xml.setAttribute("name", name);
         xml.setAttribute("x", Float.toString(x));
-        xml.setAttribute("y", Float.toString(y));
-        xml.setAttribute("dx", Float.toString(dx));
-        xml.setAttribute("dy", Float.toString(dy));
-        xml.setAttribute("layer", Integer.toString(layer));
+        xml.setAttribute("y", Float.toString(x));
+        xml.setAttribute("direction", dir.toString());
+        xml.setAttribute("swapLevel", Integer.toString(swapLevel));
+        xml.setAttribute("rot", rot.toString());
         return xml;
     }
+
+    private Direction parseDir(String dir) {
+        if (dir.equals(Direction.pwr.toString())) {
+            return Direction.pwr;
+        }
+        else {
+            return Direction.pas;
+        }
+    }
+
 }

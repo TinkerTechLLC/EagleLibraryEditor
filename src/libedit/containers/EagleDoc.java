@@ -1,8 +1,13 @@
-package libedit.objects;
+package libedit.containers;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import org.jdom2.Element;
+
+import libedit.abstractobjects.EagleObj;
+import libedit.enums.Layers;
 
 public class EagleDoc extends EagleObj {
 
@@ -62,6 +67,18 @@ public class EagleDoc extends EagleObj {
         ret += "</drawing>\n";
         ret += "</eagle>";
         return ret;
+    }
+
+    @Override
+    public void parseXML(Element xml) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public Element toXML() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

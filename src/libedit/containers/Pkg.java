@@ -1,12 +1,20 @@
-package libedit.objects;
+package libedit.containers;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import libedit.abstractobjects.EagleObj;
+import libedit.enums.Rotation;
+import libedit.objects.Rect;
+import libedit.objects.SMD;
+import libedit.objects.Text;
+import libedit.objects.Wire;
+
 public class Pkg extends EagleObj {
     private String         name;
     private List<EagleObj> objects;
+    private List<Integer>  padCount;
 
     public Pkg(String name) {
         this.name = name;
@@ -26,7 +34,7 @@ public class Pkg extends EagleObj {
             int xPos = i < pinCount / 2 ? i : i - pinCount / 2;
             float x = -xOffset + xPos * pitch;
             float y = i < pinCount / 2 ? yOffset : -yOffset;
-            this.addObject(new SMD(i + 1, x, y, padWidth, padHeight, layer));
+            this.addObject(new SMD(i + 1, x, y, padWidth, padHeight, layer, Rotation.R0));
         }
     }
 

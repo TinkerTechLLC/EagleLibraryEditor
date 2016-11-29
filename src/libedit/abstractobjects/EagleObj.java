@@ -1,8 +1,10 @@
-package libedit.objects;
+package libedit.abstractobjects;
+
+import org.jdom2.Element;
 
 public abstract class EagleObj implements Comparable<EagleObj> {
 
-    public class Priority {
+    abstract public class Priority {
         public static final int EAGLEDOC  = 0;
         public static final int DRAWING   = 1;
         public static final int SETTINGS  = 2;
@@ -20,26 +22,28 @@ public abstract class EagleObj implements Comparable<EagleObj> {
 
     abstract public int getPriority();
 
-    abstract public String toXMLString();
+    abstract public void parseXML(Element xml);
+
+    abstract public Element toXML();
 
     @Override
     public int compareTo(final EagleObj comp) {
         return Integer.compare(this.getPriority(), comp.getPriority());
     }
 
-    boolean isWire() {
+    public boolean isWire() {
         return this.getPriority() == Priority.WIRE;
     }
 
-    boolean isSMD() {
+    public boolean isSMD() {
         return this.getPriority() == Priority.SMD;
     }
 
-    boolean isText() {
+    public boolean isText() {
         return this.getPriority() == Priority.TEXT;
     }
 
-    boolean isRectangle() {
+    public boolean isRectangle() {
         return this.getPriority() == Priority.RECTANGLE;
     }
 }

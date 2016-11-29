@@ -16,7 +16,7 @@ import org.xml.sax.SAXException;
 
 public class LibraryParser {
 
-    private static File xmlSource = new File("/EaglePadGenerator/test_data/test_short.xml");
+    private static File xmlSource = new File("C:/test_short.xml");
 
     public static void parseXML() {
         // create the w3c DOM document from which JDOM is to be created
@@ -30,15 +30,12 @@ public class LibraryParser {
             System.err.println("Parser config Exception");
             e.printStackTrace();
         }
-        System.out.println(xmlSource.isFile());
 
         try {
             org.w3c.dom.Document w3cDocument;
             w3cDocument = dombuilder.parse(xmlSource);
             DOMBuilder jdomBuilder = new DOMBuilder();
             Document jdomDocument = jdomBuilder.build(w3cDocument);
-            System.out.println("Printing content");
-            System.out.println("Content size: " + jdomDocument.getContent().size());
             printFile(jdomDocument);
         } catch (SAXException e) {
             System.err.println("SAX Exception");

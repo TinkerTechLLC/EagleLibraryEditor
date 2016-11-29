@@ -1,7 +1,10 @@
-package libedit.objects;
+package libedit.containers;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import libedit.abstractobjects.EagleObj;
+import libedit.abstractobjects.EagleObj.Priority;
 
 public class Device extends EagleObj {
     String         name;

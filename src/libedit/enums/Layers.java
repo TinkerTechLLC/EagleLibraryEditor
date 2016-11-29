@@ -1,4 +1,7 @@
-package libedit.objects;
+package libedit.enums;
+
+import libedit.abstractobjects.EagleObj;
+import libedit.abstractobjects.EagleObj.Priority;
 
 public class Layers extends EagleObj {
 
