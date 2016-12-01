@@ -14,9 +14,66 @@ public class Text extends EagleObj {
     int      layer;
     Rotation rot;
 
-    @Override
-    public int getPriority() {
-        return Priority.TEXT;
+    public Text(Element xml) {
+        super(xml);
+    }
+
+    public Text(String text, float x, float y, float size, int layer, Rotation rot) {
+        super();
+        this.text = text;
+        this.x = x;
+        this.y = y;
+        this.size = size;
+        this.layer = layer;
+        this.rot = rot;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public float getSize() {
+        return size;
+    }
+
+    public void setSize(float size) {
+        this.size = size;
+    }
+
+    public int getLayer() {
+        return layer;
+    }
+
+    public void setLayer(int layer) {
+        this.layer = layer;
+    }
+
+    public Rotation getRot() {
+        return rot;
+    }
+
+    public void setRot(Rotation rot) {
+        this.rot = rot;
     }
 
     @Override
@@ -44,6 +101,11 @@ public class Text extends EagleObj {
         xml.setAttribute("layer", Integer.toString(layer));
         xml.setAttribute("rot", rot.toString());
         return xml;
+    }
+
+    @Override
+    protected void setPriority() {
+        this.priority = Priority.TEXT;
     }
 
 }

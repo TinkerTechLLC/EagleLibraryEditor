@@ -19,6 +19,10 @@ public class Pin extends EagleObj {
         pas, pwr;
     }
 
+    public Pin(Element xml) {
+        super(xml);
+    }
+
     public Pin(String name, float x, float y, float length, Direction dir, int swapLevel, Rotation rot) {
         super();
         this.name = name;
@@ -87,12 +91,6 @@ public class Pin extends EagleObj {
     }
 
     @Override
-    public int getPriority() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
     public void parseXML(Element xml) {
         try {
             name = xml.getAttributeValue("name");
@@ -126,6 +124,11 @@ public class Pin extends EagleObj {
         else {
             return Direction.pas;
         }
+    }
+
+    @Override
+    protected void setPriority() {
+        this.priority = Priority.PIN;
     }
 
 }

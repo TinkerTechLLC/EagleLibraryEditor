@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 
 import helpers.Console;
 import libedit.containers.EagleDoc;
-import libedit.containers.Pkg;
+import libedit.containers.PkgOld;
 import libedit.enums.Layers;
 
 public class Main {
@@ -21,7 +21,7 @@ public class Main {
         Console.pln("Library Name: ");
         EagleDoc ret = new EagleDoc(Console.getString());
         Console.pln("\nPackage Name: ");
-        Pkg pkg = new Pkg(Console.getString());
+        PkgOld pkg = new PkgOld(Console.getString());
         int layer;
         while (true) {
             Console.pln("\nLayer (t/b): ");

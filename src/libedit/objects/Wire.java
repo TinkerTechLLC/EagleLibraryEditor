@@ -10,6 +10,10 @@ public class Wire extends EagleObj {
     float x1, y1, x2, y2, width;
     int   layer;
 
+    public Wire(Element xml) {
+        super(xml);
+    }
+
     public Wire(float x1, float y1, float x2, float y2, float width, int layer) {
         super();
         this.x1 = x1;
@@ -69,11 +73,6 @@ public class Wire extends EagleObj {
     }
 
     @Override
-    public int getPriority() {
-        return Priority.WIRE;
-    }
-
-    @Override
     public void parseXML(Element xml) {
         try {
             x1 = xml.getAttribute("x1").getFloatValue();
@@ -98,6 +97,11 @@ public class Wire extends EagleObj {
         xml.setAttribute("width", Float.toString(width));
         xml.setAttribute("layer", Integer.toString(layer));
         return xml;
+    }
+
+    @Override
+    protected void setPriority() {
+        this.priority = Priority.WIRE;
     }
 
 }

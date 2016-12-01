@@ -1,35 +1,46 @@
 package libedit.containers;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.jdom2.Element;
+
+import libedit.abstractobjects.EagleContainer;
 import libedit.abstractobjects.EagleObj;
-import libedit.abstractobjects.EagleObj.Priority;
 
-public class Device extends EagleObj {
-    String         name;
-    List<EagleObj> objects;
+public class Device extends EagleContainer {
+    String name;
+    String packageStr;
 
-    public Device(String name) {
+    public Device(Element xml) {
+        super(xml);
+    }
+
+    public Device(String name, String packageStr, List<EagleObj> children) {
+        super(children);
         this.name = name;
-        objects = new ArrayList<EagleObj>();
+        this.packageStr = packageStr;
     }
 
     @Override
-    public int getPriority() {
-        return Priority.DEVICES;
-    }
-
-    @Override
-    public String toXMLString() {
-        String ret = "";
-        ret += "<devicesets>\n";
-        if (!objects.isEmpty()) {
-            for (EagleObj obj : objects) {
-                ret += obj.toXMLString();
-            }
+    public Element toXML() {
+        Element xml = new Element("device");
+        xml.setAttribute("name", name);
+        xml.setAttribute("package", packageStr);
+        for (Element e : childrenToXML()) {
+            xml.addContent(e);
         }
-        ret += "</devicesets>\n";
-        return ret;
+        return xml;
+    }
+
+    @Override
+    protected void setPriority() {
+        this.priority = Priority.DEVICE;
+    }
+
+    @Override
+    public void parseXML(Element xml) {
+        name = xml.getAttributeValue("name");
+        packageStr = xml.getAttributeValue("package");
+        parseXMLChildren(xml);
     }
 }

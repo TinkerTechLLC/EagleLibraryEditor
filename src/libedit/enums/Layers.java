@@ -1,69 +1,66 @@
 package libedit.enums;
 
+import org.jdom2.Element;
+
 import libedit.abstractobjects.EagleObj;
-import libedit.abstractobjects.EagleObj.Priority;
 
 public class Layers extends EagleObj {
 
-    static public final int TOP       = 1;
-    static public final int ROUTE2    = 2;
-    static public final int ROUTE3    = 3;
-    static public final int ROUTE14   = 14;
-    static public final int ROUTE15   = 15;
-    static public final int BOTTOM    = 16;
-    static public final int PADS      = 17;
-    static public final int VIAS      = 18;
-    static public final int UNROUTED  = 19;
-    static public final int DIMENSION = 20;
-    static public final int tPLACE    = 21;
-    static public final int bPLACE    = 22;
-    static public final int tORIGINS  = 23;
-    static public final int bORIGINS  = 24;
-    static public final int tNAMES    = 25;
-    static public final int bNAMES    = 26;
-    static public final int tVALUES   = 27;
-    static public final int bVALUES   = 28;
-    static public final int tSTOP     = 29;
-    static public final int bSTOP     = 30;
-    static public final int tCREAM    = 31;
-    static public final int bCREAM    = 32;
-    static public final int tFINISH   = 33;
-    static public final int bFINISH   = 34;
-    static public final int tGLUE     = 35;
-    static public final int bGLUE     = 36;
-    static public final int tTEST     = 37;
-    static public final int bTEST     = 38;
-    static public final int tKEEPOUT  = 39;
-    static public final int bKEEPOUT  = 40;
-    static public final int tRESTRICT = 41;
-    static public final int bRESTRICT = 42;
-    static public final int VRESTRICT = 43;
-    static public final int DRILLS    = 44;
-    static public final int HOLES     = 45;
-    static public final int MILLING   = 46;
-    static public final int MEASURES  = 47;
-    static public final int DOCUMENT  = 48;
-    static public final int REFERENCE = 49;
-    static public final int tDOCU     = 50;
-    static public final int bDOCU     = 51;
-    static public final int PATCH_TOP = 101;
-    static public final int VSCORE    = 102;
-    static public final int FP3       = 103;
-    static public final int NAME      = 104;
-    static public final int NOTES     = 150;
-    static public final int HEATSINK  = 151;
-    static public final int EDGE      = 249;
+    Element                 layersElement = null;
 
-    @Override
-    public int getPriority() {
-        return Priority.LAYER;
-    }
+    static public final int TOP           = 1;
+    static public final int ROUTE2        = 2;
+    static public final int ROUTE3        = 3;
+    static public final int ROUTE14       = 14;
+    static public final int ROUTE15       = 15;
+    static public final int BOTTOM        = 16;
+    static public final int PADS          = 17;
+    static public final int VIAS          = 18;
+    static public final int UNROUTED      = 19;
+    static public final int DIMENSION     = 20;
+    static public final int tPLACE        = 21;
+    static public final int bPLACE        = 22;
+    static public final int tORIGINS      = 23;
+    static public final int bORIGINS      = 24;
+    static public final int tNAMES        = 25;
+    static public final int bNAMES        = 26;
+    static public final int tVALUES       = 27;
+    static public final int bVALUES       = 28;
+    static public final int tSTOP         = 29;
+    static public final int bSTOP         = 30;
+    static public final int tCREAM        = 31;
+    static public final int bCREAM        = 32;
+    static public final int tFINISH       = 33;
+    static public final int bFINISH       = 34;
+    static public final int tGLUE         = 35;
+    static public final int bGLUE         = 36;
+    static public final int tTEST         = 37;
+    static public final int bTEST         = 38;
+    static public final int tKEEPOUT      = 39;
+    static public final int bKEEPOUT      = 40;
+    static public final int tRESTRICT     = 41;
+    static public final int bRESTRICT     = 42;
+    static public final int VRESTRICT     = 43;
+    static public final int DRILLS        = 44;
+    static public final int HOLES         = 45;
+    static public final int MILLING       = 46;
+    static public final int MEASURES      = 47;
+    static public final int DOCUMENT      = 48;
+    static public final int REFERENCE     = 49;
+    static public final int tDOCU         = 50;
+    static public final int bDOCU         = 51;
+    static public final int PATCH_TOP     = 101;
+    static public final int VSCORE        = 102;
+    static public final int FP3           = 103;
+    static public final int NAME          = 104;
+    static public final int NOTES         = 150;
+    static public final int HEATSINK      = 151;
+    static public final int EDGE          = 249;
 
     static public String toXMLStringStatic() {
         return new Layers().toXMLString();
     }
 
-    @Override
     public String toXMLString() {
         String ret = "<layers>\n"
                 + "<layer number=\"1\" name=\"Top\" color=\"4\" fill=\"1\" visible=\"yes\" active=\"yes\" />\n"
@@ -187,5 +184,25 @@ public class Layers extends EagleObj {
                 + "<layer number=\"254\" name=\"cooling\" color=\"7\" fill=\"1\" visible=\"yes\" active=\"yes\" />\n"
                 + "</layers>\n";
         return ret;
+    }
+
+    @Override
+    public void parseXML(Element xml) {
+        layersElement = xml;
+    }
+
+    @Override
+    public Element toXML() {
+        if (layersElement != null) {
+            return layersElement;
+        }
+        else {
+            return null;
+        }
+    }
+
+    @Override
+    protected void setPriority() {
+        this.priority = Priority.LAYER;
     }
 }

@@ -21,7 +21,12 @@ public class SMD extends EagleObj {
     private int      layer;
     private Rotation rot;
 
+    public SMD(Element xml) {
+        super(xml);
+    }
+
     public SMD(String name, float x, float y, float dx, float dy, int layer, Rotation rot) {
+        super();
         this.name = name;
         this.x = x;
         this.y = y;
@@ -88,11 +93,6 @@ public class SMD extends EagleObj {
     }
 
     @Override
-    public int getPriority() {
-        return Priority.SMD;
-    }
-
-    @Override
     public void parseXML(Element xml) {
         try {
             name = xml.getAttributeValue("name");
@@ -119,5 +119,10 @@ public class SMD extends EagleObj {
         xml.setAttribute("dy", Float.toString(dy));
         xml.setAttribute("layer", Integer.toString(layer));
         return xml;
+    }
+
+    @Override
+    protected void setPriority() {
+        this.priority = Priority.SMD;
     }
 }

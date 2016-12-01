@@ -10,6 +10,10 @@ public class Circle extends EagleObj {
     float x, y, radius, width;
     int   layer;
 
+    public Circle(Element xml) {
+        super(xml);
+    }
+
     public Circle(float x, float y, float radius, float width, int layer) {
         super();
         this.x = x;
@@ -60,12 +64,6 @@ public class Circle extends EagleObj {
     }
 
     @Override
-    public int getPriority() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
     public void parseXML(Element xml) {
         try {
             x = xml.getAttribute("x").getFloatValue();
@@ -88,6 +86,12 @@ public class Circle extends EagleObj {
         xml.setAttribute("width", Float.toString(width));
         xml.setAttribute("layer", Integer.toString(layer));
         return xml;
+    }
+
+    @Override
+    protected void setPriority() {
+        // TODO Auto-generated method stub
+
     }
 
 }

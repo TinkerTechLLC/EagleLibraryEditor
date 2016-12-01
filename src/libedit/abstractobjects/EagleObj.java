@@ -4,23 +4,35 @@ import org.jdom2.Element;
 
 public abstract class EagleObj implements Comparable<EagleObj> {
 
-    abstract public class Priority {
-        public static final int EAGLEDOC  = 0;
-        public static final int DRAWING   = 1;
-        public static final int SETTINGS  = 2;
-        public static final int LAYER     = 3;
-        public static final int LIBRARY   = 4;
-        public static final int PACKAGE   = 5;
-        public static final int WIRE      = 6;
-        public static final int SMD       = 7;
-        public static final int TEXT      = 8;
-        public static final int RECTANGLE = 9;
-        public static final int SYMBOLS   = 10;
-        public static final int DEVICES   = 11;
+    protected Priority priority;
 
+    public enum Priority {
+        EAGLEDOC(0), DRAWING(1), SETTING(2), GRID(3), LAYER(4), DEVICESET(5), GATE(6), DEVICE(7), SYMBOL(8), LIBRARY(
+                9), PACKAGE(10), WIRE(11), SMD(12), PAD(13), TEXT(14), RECTANGLE(15), CIRCLE(16), POLYGON(17), PIN(
+                        18), VERTEX(19), CONNECT(20), TECHNOLOGY(21), OBJLIST(22);
+        int priority;
+
+        Priority(int priorityVal) {
+            this.priority = priorityVal;
+        }
+
+        int getVal() {
+            return priority;
+        }
     }
 
-    abstract public int getPriority();
+    protected EagleObj() {
+        setPriority();
+    }
+
+    protected EagleObj(Element xml) {
+        this.parseXML(xml);
+        setPriority();
+    }
+
+    public Priority getPriority() {
+        return priority;
+    };
 
     abstract public void parseXML(Element xml);
 
@@ -28,8 +40,10 @@ public abstract class EagleObj implements Comparable<EagleObj> {
 
     @Override
     public int compareTo(final EagleObj comp) {
-        return Integer.compare(this.getPriority(), comp.getPriority());
+        return Integer.compare(this.getPriority().getVal(), comp.getPriority().getVal());
     }
+
+    protected abstract void setPriority();
 
     public boolean isWire() {
         return this.getPriority() == Priority.WIRE;

@@ -16,8 +16,8 @@ public class Polygon extends EagleObj {
     int           layer;
     List<Point2D> verticies;
 
-    public Polygon() {
-
+    public Polygon(Element xml) {
+        super(xml);
     }
 
     public Polygon(float width, int layer, List<Point2D> verticies) {
@@ -56,12 +56,6 @@ public class Polygon extends EagleObj {
     }
 
     @Override
-    public int getPriority() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
     public void parseXML(Element xml) {
         try {
             width = xml.getAttribute("width").getFloatValue();
@@ -96,6 +90,11 @@ public class Polygon extends EagleObj {
             xml.addContent(vertex);
         }
         return xml;
+    }
+
+    @Override
+    protected void setPriority() {
+        this.priority = Priority.POLYGON;
     }
 
 }
