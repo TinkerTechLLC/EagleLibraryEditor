@@ -126,6 +126,24 @@ public abstract class EagleContainer extends EagleObj {
             } catch (NullPointerException e) {
                 System.out.println("No priority available");
             }
-        };
+        }
+    }
+
+    public <T> EagleObj getObjByType(Class<T> type) {
+        for (EagleObj o : getChildren()) {
+            if (o.getClass() == type) {
+                return o;
+            }
+            else if (EagleContainer.class.isAssignableFrom(o.getClass())) {
+                EagleObj ret = ((EagleContainer) o).getObjByType(type);
+                if (ret == null) {
+                    continue;
+                }
+                else {
+                    return ret;
+                }
+            }
+        }
+        return null;
     }
 }

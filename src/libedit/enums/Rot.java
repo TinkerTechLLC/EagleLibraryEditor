@@ -7,18 +7,18 @@ public class Rot {
     }
 
     public static Rotation parseRotation(String rotStr) {
-        Rotation rot;
-        if (rotStr.equals(Rotation.R90.toString())) {
+        Rotation rot = Rotation.R0;
+        if (rotStr == null || rotStr.equals(Rotation.R0.toString())) {
+
+        }
+        else if (rotStr.equals(Rotation.R90.toString())) {
             rot = Rotation.R90;
         }
-        if (rotStr.equals(Rotation.R180.toString())) {
+        else if (rotStr.equals(Rotation.R180.toString())) {
             rot = Rotation.R180;
         }
-        if (rotStr.equals(Rotation.R270.toString())) {
+        else if (rotStr.equals(Rotation.R270.toString())) {
             rot = Rotation.R270;
-        }
-        else {
-            rot = Rotation.R0;
         }
         return rot;
     }
