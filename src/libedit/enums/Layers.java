@@ -203,6 +203,13 @@ public class Layers extends EagleObj {
 
     @Override
     protected void setPriority() {
-        this.priority = Priority.LAYER;
+        this.priority = Priority.OBJLIST;
+
+    }
+
+    @Override
+    public void printContents(int tabLevel) {
+        // TODO Auto-generated method stub
+
     }
 }

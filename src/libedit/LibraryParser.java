@@ -16,9 +16,8 @@ import org.xml.sax.SAXException;
 
 public class LibraryParser {
 
-    private static File xmlSource = new File("C:/test_short.xml");
-
-    public static void parseXML() {
+    public static Document parseXML(String xmlPath) {
+        File xmlSource = new File(xmlPath);
         // create the w3c DOM document from which JDOM is to be created
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         // we are interested in making it namespace aware.
@@ -37,18 +36,18 @@ public class LibraryParser {
             DOMBuilder jdomBuilder = new DOMBuilder();
             Document jdomDocument = jdomBuilder.build(w3cDocument);
             printFile(jdomDocument);
+            return jdomDocument;
         } catch (SAXException e) {
             System.err.println("SAX Exception");
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             System.err.println("IO Exception");
             e.printStackTrace();
         }
-
+        return null;
     }
 
-    private static void printFile(Document jdom) {
+    public static void printFile(Document jdom) {
         printElementContents(jdom.getRootElement(), 0);
     }
 

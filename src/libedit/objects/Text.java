@@ -108,4 +108,10 @@ public class Text extends EagleObj {
         this.priority = Priority.TEXT;
     }
 
+    @Override
+    public void printContents(int tabLevel) {
+        // TODO Auto-generated method stub
+
+    }
+
 }

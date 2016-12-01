@@ -21,6 +21,14 @@ public class ObjList extends EagleContainer {
         this.name = xml.getName();
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public void parseXML(Element xml) {
         this.parseXMLChildren(xml);
@@ -34,8 +42,11 @@ public class ObjList extends EagleContainer {
     @Override
     public Element toXML() {
         Element xml = new Element(name);
-        for (Element e : childrenToXML()) {
-            xml.addContent(e);
+        List<Element> xmlChildren = childrenToXML();
+        if (xmlChildren.size() > 0) {
+            for (Element e : xmlChildren) {
+                xml.addContent(e);
+            }
         }
         return xml;
     }

@@ -94,4 +94,10 @@ public class Circle extends EagleObj {
 
     }
 
+    @Override
+    public void printContents(int tabLevel) {
+        // TODO Auto-generated method stub
+
+    }
+
 }

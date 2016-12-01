@@ -7,10 +7,6 @@ import libedit.abstractobjects.EagleObj;
 import libedit.enums.Rot;
 import libedit.enums.Rot.Rotation;
 
-/**
- * @author Michael
- *
- */
 public class SMD extends EagleObj {
 
     private String   name;
@@ -124,5 +120,11 @@ public class SMD extends EagleObj {
     @Override
     protected void setPriority() {
         this.priority = Priority.SMD;
+    }
+
+    @Override
+    public void printContents(int tabLevel) {
+        // TODO Auto-generated method stub
+
     }
 }

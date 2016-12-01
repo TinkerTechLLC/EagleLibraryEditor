@@ -94,4 +94,10 @@ public class Rect extends EagleObj {
         this.priority = Priority.RECTANGLE;
     }
 
+    @Override
+    public void printContents(int tabLevel) {
+        // TODO Auto-generated method stub
+
+    }
+
 }

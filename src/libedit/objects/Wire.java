@@ -104,4 +104,10 @@ public class Wire extends EagleObj {
         this.priority = Priority.WIRE;
     }
 
+    @Override
+    public void printContents(int tabLevel) {
+        // TODO Auto-generated method stub
+
+    }
+
 }

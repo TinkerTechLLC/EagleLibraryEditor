@@ -68,6 +68,9 @@ public class Polygon extends EagleObj {
                 float x = v.getAttribute("x").getFloatValue();
                 float y = v.getAttribute("y").getFloatValue();
                 p.setLocation(x, y);
+                if (verticies == null) {
+                    verticies = new ArrayList<Point2D>();
+                }
                 this.verticies.add(p);
             }
         } catch (DataConversionException e) {
@@ -95,6 +98,18 @@ public class Polygon extends EagleObj {
     @Override
     protected void setPriority() {
         this.priority = Priority.POLYGON;
+    }
+
+    @Override
+    public void printContents(int tabLevel) {
+        printTabs(tabLevel);
+        System.out.println("Layer: " + layer);
+        printTabs(tabLevel);
+        System.out.println("Width: " + width);
+        for (Point2D v : verticies) {
+            printTabs(tabLevel);
+            System.out.println("Vertex: x= " + v.getX() + "\ty=" + v.getY());
+        }
     }
 
 }

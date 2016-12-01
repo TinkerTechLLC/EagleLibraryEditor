@@ -102,4 +102,10 @@ public class Pad extends EagleObj {
         this.priority = Priority.PAD;
     }
 
+    @Override
+    public void printContents(int tabLevel) {
+        // TODO Auto-generated method stub
+
+    }
+
 }

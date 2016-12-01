@@ -5,6 +5,7 @@ import org.jdom2.Element;
 public abstract class EagleObj implements Comparable<EagleObj> {
 
     protected Priority priority;
+    String             objectName;
 
     public enum Priority {
         EAGLEDOC(0), DRAWING(1), SETTING(2), GRID(3), LAYER(4), DEVICESET(5), GATE(6), DEVICE(7), SYMBOL(8), LIBRARY(
@@ -27,6 +28,7 @@ public abstract class EagleObj implements Comparable<EagleObj> {
 
     protected EagleObj(Element xml) {
         this.parseXML(xml);
+        objectName = xml.getName();
         setPriority();
     }
 
@@ -37,6 +39,18 @@ public abstract class EagleObj implements Comparable<EagleObj> {
     abstract public void parseXML(Element xml);
 
     abstract public Element toXML();
+
+    public void printContents() {
+        printContents(0);
+    };
+
+    abstract public void printContents(int tabLevel);
+
+    public void printTabs(int tabLevel) {
+        for (int i = 0; i < tabLevel; i++) {
+            System.out.print("\t");
+        }
+    }
 
     @Override
     public int compareTo(final EagleObj comp) {

@@ -131,4 +131,10 @@ public class Pin extends EagleObj {
         this.priority = Priority.PIN;
     }
 
+    @Override
+    public void printContents(int tabLevel) {
+        // TODO Auto-generated method stub
+
+    }
+
 }

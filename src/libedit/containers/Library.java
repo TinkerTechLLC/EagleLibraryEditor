@@ -30,6 +30,7 @@ public class Library extends EagleContainer {
     @Override
     public Element toXML() {
         Element xml = new Element("library");
+        System.out.println("Library children: " + this.children.size());
         for (Element e : childrenToXML()) {
             xml.addContent(e);
         }

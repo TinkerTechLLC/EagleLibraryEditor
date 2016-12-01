@@ -12,6 +12,11 @@ import libedit.enums.Layers;
 public class EagleDoc extends EagleContainer {
 
     String fileName;
+    String version;
+
+    public EagleDoc(Element xml) {
+        super(xml);
+    }
 
     public EagleDoc(String fileName, List<EagleObj> children) {
         super(children);
@@ -25,6 +30,18 @@ public class EagleDoc extends EagleContainer {
 
     public String getFileName() {
         return fileName;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public String toXMLString() {
@@ -59,12 +76,14 @@ public class EagleDoc extends EagleContainer {
 
     @Override
     public void parseXML(Element xml) {
+        version = xml.getAttributeValue("version");
         parseXMLChildren(xml);
     }
 
     @Override
     public Element toXML() {
         Element xml = new Element("eagle");
+        xml.setAttribute("version", version);
         for (Element e : childrenToXML()) {
             xml.addContent(e);
         }

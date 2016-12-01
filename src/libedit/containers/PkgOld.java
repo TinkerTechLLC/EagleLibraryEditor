@@ -7,13 +7,13 @@ import java.util.List;
 import org.jdom2.Element;
 
 import libedit.abstractobjects.EagleObj;
-import libedit.enums.Rot.Rotation;
+import libedit.abstractobjects.EagleObj.Priority;
 import libedit.objects.Rect;
 import libedit.objects.SMD;
 import libedit.objects.Text;
 import libedit.objects.Wire;
 
-public class PkgOld extends EagleObj {
+public class PkgOld {
     private String         name;
     private List<EagleObj> objects;
     private List<Integer>  padCount;
@@ -36,7 +36,8 @@ public class PkgOld extends EagleObj {
             int xPos = i < pinCount / 2 ? i : i - pinCount / 2;
             float x = -xOffset + xPos * pitch;
             float y = i < pinCount / 2 ? yOffset : -yOffset;
-            this.addObject(new SMD(i + 1, x, y, padWidth, padHeight, layer, Rotation.R0));
+            // this.addObject(new SMD(i + 1, x, y, padWidth, padHeight, layer,
+            // Rotation.R0));
         }
     }
 
@@ -92,15 +93,14 @@ public class PkgOld extends EagleObj {
         String ret = "";
         ret += "<package name=\"" + name + "\" >\n";
         for (EagleObj thisObj : objects) {
-            ret += thisObj.toXMLString();
+            // ret += thisObj.toXMLString();
             ret += "\n";
         }
         ret += "</package>";
         return ret;
     }
 
-    @Override
-    public int getPriority() {
+    public Priority getPriority() {
         return Priority.PACKAGE;
     }
 
@@ -109,13 +109,11 @@ public class PkgOld extends EagleObj {
         Collections.sort(objects);
     }
 
-    @Override
     public void parseXML(Element xml) {
         // TODO Auto-generated method stub
 
     }
 
-    @Override
     public Element toXML() {
         // TODO Auto-generated method stub
         return null;

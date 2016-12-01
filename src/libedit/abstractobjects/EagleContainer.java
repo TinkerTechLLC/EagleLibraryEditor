@@ -10,11 +10,14 @@ import libedit.containers.Library;
 import libedit.containers.ObjList;
 import libedit.containers.Pkg;
 import libedit.objects.Circle;
+import libedit.objects.Grid;
+import libedit.objects.Layer;
 import libedit.objects.Pad;
 import libedit.objects.Pin;
 import libedit.objects.Polygon;
 import libedit.objects.Rect;
 import libedit.objects.SMD;
+import libedit.objects.Setting;
 import libedit.objects.Text;
 import libedit.objects.Wire;
 
@@ -42,8 +45,19 @@ public abstract class EagleContainer extends EagleObj {
             EagleObj thisObj = null;
 
             // List objects -- Plural element name ending indicates list
-            if (e.getName().endsWith("s")) {
+            if (e.getName().endsWith("s") || e.getName().equals("drawing")) {
                 thisObj = new ObjList(e);
+            }
+
+            // Non-construction objects
+            else if (e.getName().equals("setting")) {
+                thisObj = new Setting(e);
+            }
+            else if (e.getName().equals("grid")) {
+                thisObj = new Grid(e);
+            }
+            else if (e.getName().equals("layer")) {
+                thisObj = new Layer(e);
             }
 
             // Basic objects
@@ -102,4 +116,16 @@ public abstract class EagleContainer extends EagleObj {
         return childrenXML;
     }
 
+    @Override
+    public void printContents(int tabLevel) {
+        for (EagleObj o : this.getChildren()) {
+            printTabs(tabLevel);
+            try {
+                System.out.println(o.getPriority().toString());
+                o.printContents(tabLevel + 1);
+            } catch (NullPointerException e) {
+                System.out.println("No priority available");
+            }
+        };
+    }
 }

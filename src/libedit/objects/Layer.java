@@ -60,4 +60,10 @@ public class Layer extends EagleObj {
         this.priority = Priority.LAYER;
     }
 
+    @Override
+    public void printContents(int tabLevel) {
+        // TODO Auto-generated method stub
+
+    }
+
 }
