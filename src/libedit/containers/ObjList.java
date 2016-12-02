@@ -41,6 +41,7 @@ public class ObjList extends EagleContainer {
 
     @Override
     public Element toXML() {
+        // System.out.println("Converting children of " + name);
         Element xml = new Element(name);
         List<Element> xmlChildren = childrenToXML();
         if (xmlChildren.size() > 0) {
@@ -49,6 +50,12 @@ public class ObjList extends EagleContainer {
             }
         }
         return xml;
+    }
+
+    @Override
+    protected void printAttributes(int tabLevel) {
+        this.printTabs(tabLevel);
+        System.out.println("name=" + name);
     }
 
 }

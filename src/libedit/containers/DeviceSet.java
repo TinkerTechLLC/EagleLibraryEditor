@@ -9,35 +9,52 @@ import libedit.abstractobjects.EagleObj;
 
 public class DeviceSet extends EagleContainer {
 
-    String name;
-    String packageStr;
+    String name, prefix, uservalue;
 
     public DeviceSet(Element xml) {
         super(xml);
     }
 
-    public DeviceSet(String name, String packageStr, List<EagleObj> children) {
+    public DeviceSet(String name, String prefix, String uservalue, List<EagleObj> children) {
         super(children);
         this.name = name;
-        this.packageStr = packageStr;
+        this.prefix = prefix;
+        this.uservalue = uservalue;
         this.children = children;
     }
 
     @Override
     public void parseXML(Element xml) {
-        // TODO Auto-generated method stub
-
+        name = xml.getAttributeValue("name");
+        prefix = xml.getAttributeValue("prefix");
+        uservalue = xml.getAttributeValue("uservalue");
+        this.parseXMLChildren(xml);
     }
 
     @Override
     public Element toXML() {
-        // TODO Auto-generated method stub
-        return null;
+        // System.out.println("Package children: " + this.children.size());
+        Element xml = new Element("deviceset");
+        xml.setAttribute("name", name);
+        xml.setAttribute("prefix", prefix);
+        if (uservalue != null) {
+            xml.setAttribute("uservalue", uservalue);
+        }
+        for (Element e : childrenToXML()) {
+            xml.addContent(e);
+        }
+        return xml;
     }
 
     @Override
     protected void setPriority() {
         this.priority = Priority.DEVICESET;
+    }
+
+    @Override
+    protected void printAttributes(int tabLevel) {
+        this.printTabs(tabLevel);
+        System.out.println("name=" + name + " prefix=" + prefix + " uservalue=" + uservalue);
     }
 
 }

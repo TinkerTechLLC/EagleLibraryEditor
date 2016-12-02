@@ -4,18 +4,20 @@ import org.jdom2.DataConversionException;
 import org.jdom2.Element;
 
 import libedit.abstractobjects.EagleObj;
+import libedit.enums.PadShape;
 
 public class Pad extends EagleObj {
 
-    int     name;
-    float   x, y, drill, diameter;
-    boolean stop;
+    String   name;
+    float    x, y, drill, diameter;
+    PadShape shape;
+    boolean  stop;
 
     public Pad(Element xml) {
         super(xml);
     }
 
-    public Pad(int name, float x, float y, float drill, float diameter, boolean stop) {
+    public Pad(String name, float x, float y, float drill, float diameter, PadShape shape, boolean stop) {
         super();
         this.name = name;
         this.x = x;
@@ -23,13 +25,14 @@ public class Pad extends EagleObj {
         this.drill = drill;
         this.diameter = diameter;
         this.stop = stop;
+        this.shape = shape;
     }
 
-    public int getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(int name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -65,6 +68,14 @@ public class Pad extends EagleObj {
         this.diameter = diameter;
     }
 
+    public PadShape getShape() {
+        return shape;
+    }
+
+    public void setShape(PadShape shape) {
+        this.shape = shape;
+    }
+
     public boolean isStop() {
         return stop;
     }
@@ -76,10 +87,12 @@ public class Pad extends EagleObj {
     @Override
     public void parseXML(Element xml) {
         try {
+            name = xml.getAttributeValue("name");
             x = xml.getAttribute("x").getFloatValue();
             y = xml.getAttribute("y").getFloatValue();
             drill = xml.getAttribute("drill").getFloatValue();
             diameter = xml.getAttribute("diameter").getFloatValue();
+            shape = PadShape.parseString(xml.getAttributeValue("shape"));
         } catch (DataConversionException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -94,6 +107,7 @@ public class Pad extends EagleObj {
         xml.setAttribute("y", Float.toString(y));
         xml.setAttribute("drill", Float.toString(drill));
         xml.setAttribute("diameter", Float.toString(diameter));
+        xml.setAttribute("shape", shape.toString().toLowerCase());
         return xml;
     }
 
@@ -104,8 +118,10 @@ public class Pad extends EagleObj {
 
     @Override
     public void printContents(int tabLevel) {
-        // TODO Auto-generated method stub
-
+        this.printTabs(tabLevel);
+        System.out.println("name=" + name + " x=" + x + " y=" + y +
+                " drill=" + drill + " diameter=" + diameter +
+                "shape=" + shape.toString() + " stop=" + stop);
     }
 
 }

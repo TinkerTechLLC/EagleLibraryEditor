@@ -11,6 +11,10 @@ public class Symbol extends EagleContainer {
 
     String name;
 
+    public Symbol(Element xml) {
+        super(xml);
+    }
+
     public Symbol(String name, List<EagleObj> children) {
         super(children);
         this.name = name;
@@ -23,13 +27,23 @@ public class Symbol extends EagleContainer {
 
     @Override
     public void parseXML(Element xml) {
-        // TODO Auto-generated method stub
-
+        name = xml.getAttributeValue("name");
+        this.parseXMLChildren(xml);
     }
 
     @Override
     public Element toXML() {
-        // TODO Auto-generated method stub
-        return null;
+        Element xml = new Element("symbol");
+        // System.out.println("Symbol children: " + this.children.size());
+        for (Element e : childrenToXML()) {
+            xml.addContent(e);
+        }
+        return xml;
+    }
+
+    @Override
+    protected void printAttributes(int tabLevel) {
+        this.printTabs(tabLevel);
+        System.out.println("name=" + name);
     }
 }

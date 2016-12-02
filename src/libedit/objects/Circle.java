@@ -90,7 +90,7 @@ public class Circle extends EagleObj {
 
     @Override
     protected void setPriority() {
-        // TODO Auto-generated method stub
+        this.priority = Priority.CIRCLE;
 
     }
 

@@ -10,7 +10,7 @@ public abstract class EagleObj implements Comparable<EagleObj> {
     public enum Priority {
         EAGLEDOC(0), DRAWING(1), SETTING(2), GRID(3), LAYER(4), DEVICESET(5), GATE(6), DEVICE(7), SYMBOL(8), LIBRARY(
                 9), PACKAGE(10), WIRE(11), SMD(12), PAD(13), TEXT(14), RECTANGLE(15), CIRCLE(16), POLYGON(17), PIN(
-                        18), VERTEX(19), CONNECT(20), TECHNOLOGY(21), OBJLIST(22);
+                        18), VERTEX(19), CONNECT(20), TECHNOLOGY(21), OBJLIST(22), DESCRIPTION(23);
         int priority;
 
         Priority(int priorityVal) {

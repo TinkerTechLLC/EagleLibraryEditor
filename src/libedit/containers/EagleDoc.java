@@ -63,4 +63,10 @@ public class EagleDoc extends EagleContainer {
         }
         return xml;
     }
+
+    @Override
+    protected void printAttributes(int tabLevel) {
+        this.printTabs(tabLevel);
+        System.out.println("version=" + version);
+    }
 }
