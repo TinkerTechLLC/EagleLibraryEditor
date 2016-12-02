@@ -106,8 +106,10 @@ public class Wire extends EagleObj {
 
     @Override
     public void printContents(int tabLevel) {
-        // TODO Auto-generated method stub
-
+        this.printTabs(tabLevel);
+        System.out.println("x1=" + x1 + " y1=" + y1 +
+                " x2=" + x2 + " y2=" + y2 +
+                " width=" + width + " layer=" + layer);
     }
 
 }

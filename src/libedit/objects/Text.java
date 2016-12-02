@@ -110,7 +110,9 @@ public class Text extends EagleObj {
 
     @Override
     public void printContents(int tabLevel) {
-        // TODO Auto-generated method stub
+        this.printTabs(tabLevel);
+        System.out.println("text=" + text + " x=" + x + " y=" + y +
+                " size=" + size + " layer=" + layer + " rot=" + rot);
 
     }
 

@@ -35,7 +35,6 @@ public class LibraryParser {
             w3cDocument = dombuilder.parse(xmlSource);
             DOMBuilder jdomBuilder = new DOMBuilder();
             Document jdomDocument = jdomBuilder.build(w3cDocument);
-            printFile(jdomDocument);
             return jdomDocument;
         } catch (SAXException e) {
             System.err.println("SAX Exception");

@@ -124,7 +124,10 @@ public class SMD extends EagleObj {
 
     @Override
     public void printContents(int tabLevel) {
-        // TODO Auto-generated method stub
-
+        this.printTabs(tabLevel);
+        System.out.println("name=" + name +
+                " x=" + x + " y=" + y +
+                " dx =" + dx + " dy=" + dy +
+                " layer=" + layer + " rot=" + rot);
     }
 }

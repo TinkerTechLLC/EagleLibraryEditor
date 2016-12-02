@@ -11,8 +11,9 @@ public class Pkg extends EagleContainer {
 
     String name;
 
-    public Pkg(List<EagleObj> children) {
+    public Pkg(String name, List<EagleObj> children) {
         super(children);
+        this.name = name;
     }
 
     public Pkg(Element xml) {
