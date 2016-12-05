@@ -4,13 +4,13 @@ import java.util.List;
 
 import org.jdom2.Document;
 
-import libedit.abstractobjects.EagleObj;
-import libedit.containers.EagleDoc;
-import libedit.containers.Library;
-import libedit.containers.Pkg;
-import libedit.factories.PatternFactory;
-import libedit.factories.PatternFactory.PadCount;
-import libedit.factories.PatternFactory.PadSize;
+import libedit.models.abstractobjects.EagleObj;
+import libedit.models.containers.EagleDoc;
+import libedit.models.containers.Library;
+import libedit.models.containers.Pkg;
+import libedit.models.factories.PatternFactory;
+import libedit.models.factories.PatternFactory.PadCount;
+import libedit.models.factories.PatternFactory.PadSize;
 
 public class Main {
 
@@ -28,7 +28,7 @@ public class Main {
         lib.printContents();
         System.out.println("\n\n\n");
 
-        PadCount pc = new PadCount(3, 4, 3, 4);
+        PadCount pc = new PadCount(2, 2, 2, 2);
         PadSize ps = new PadSize(1.12f, 0.5f);
         List<EagleObj> pkgChildren = PatternFactory.createSMDPattern(pc, ps, 2, 8, 10, true);
         Pkg pkg = new Pkg("a_new_package_with_long_name", pkgChildren);
