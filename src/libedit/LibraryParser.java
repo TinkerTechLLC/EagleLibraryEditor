@@ -1,6 +1,8 @@
 package libedit;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
@@ -12,12 +14,36 @@ import org.jdom2.Attribute;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.DOMBuilder;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 import org.xml.sax.SAXException;
+
+import libedit.helpers.FileEdit;
+import libedit.models.containers.EagleDoc;
+import libedit.models.containers.Library;
+import libedit.models.containers.Pkg;
 
 public class LibraryParser {
 
-    public static Document parseXML(String xmlPath) {
-        File xmlSource = new File(xmlPath);
+    /*
+     * ~~~~~~~~~~~~Static Variables~~~~~~~~~~~~
+     */
+
+    private static String xmlPath = null;
+
+    /*
+     * ~~~~~~~~~~~~Static Public Methods~~~~~~~~~~~~
+     */
+
+    public static Document parseXML(String path) {
+        xmlPath = path;
+
+        // The second line of the Eagle library raw XML interferes with this XML
+        // parser, so create a copy of the library without the line, but save it
+        // for later to add back in when saving the final modified library file
+        File workingFile = FileEdit.removeLineFromFile(new File(xmlPath),
+                "<!DOCTYPE eagle SYSTEM \"eagle.dtd\">");
+
         // create the w3c DOM document from which JDOM is to be created
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         // we are interested in making it namespace aware.
@@ -30,12 +56,12 @@ public class LibraryParser {
             e.printStackTrace();
         }
 
+        Document jdomDocument = null;
         try {
             org.w3c.dom.Document w3cDocument;
-            w3cDocument = dombuilder.parse(xmlSource);
+            w3cDocument = dombuilder.parse(workingFile);
             DOMBuilder jdomBuilder = new DOMBuilder();
-            Document jdomDocument = jdomBuilder.build(w3cDocument);
-            return jdomDocument;
+            jdomDocument = jdomBuilder.build(w3cDocument);
         } catch (SAXException e) {
             System.err.println("SAX Exception");
             e.printStackTrace();
@@ -43,12 +69,81 @@ public class LibraryParser {
             System.err.println("IO Exception");
             e.printStackTrace();
         }
-        return null;
+
+        // We don't need the temporary file later, so delete it now
+        // workingFile.delete();
+        return jdomDocument;
+    }
+
+    public static String getXmlPath() {
+        return xmlPath;
+    }
+
+    public static void setXmlPath(String xmlPath) {
+        LibraryParser.xmlPath = xmlPath;
     }
 
     public static void printFile(Document jdom) {
         printElementContents(jdom.getRootElement(), 0);
     }
+
+    public static EagleDoc eagleDocFromLibrary(String path) {
+        Document jdom = LibraryParser.parseXML(path);
+        return new EagleDoc(jdom.getRootElement());
+    }
+
+    /**
+     * Saves the an Eagle document to the path of the last library that was
+     * loaded. If none has been loaded, the method does nothing.
+     * 
+     * @param eagleDoc
+     *            The Eagle document to save to file
+     */
+    public static void saveEagleDocToLibrary(EagleDoc eagleDoc) {
+        if (xmlPath != null) {
+            saveEagleDocToLibrary(eagleDoc, xmlPath);
+        }
+    }
+
+    /**
+     * Saves an Eagle document to the path provided
+     * 
+     * @param eagleDoc
+     *            The Eagle document to save the path
+     * @param path
+     *            Destination library path as a String
+     */
+    public static void saveEagleDocToLibrary(EagleDoc eagleDoc, String path) {
+        try {
+            Document jdom = new Document(eagleDoc.toXML());
+            XMLOutputter xmlOut = new XMLOutputter(Format.getPrettyFormat());
+            BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+            xmlOut.output(jdom, writer);
+            writer.close();
+        } catch (IOException e) {
+            System.err.println("IO error writing EagleDoc to library file");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Adds a new package to an existing Eagle library
+     * 
+     * @param eaglePackage
+     *            The package to be added to the library
+     * @param path
+     *            The path of the destination library
+     */
+    public static void savePackageToLibrary(Pkg eaglePackage, String path) {
+        EagleDoc eagleDoc = eagleDocFromLibrary(path);
+        Library lib = (Library) eagleDoc.getObjByType(Library.class);
+        lib.getPackages().add(eaglePackage);
+        LibraryParser.saveEagleDocToLibrary(eagleDoc, path);
+    }
+
+    /*
+     * ~~~~~~~~~~~~Static Private Methods~~~~~~~~~~~~
+     */
 
     private static void printElementContents(Element e, int depth) {
         for (int i = 0; i < depth; i++) {
@@ -74,5 +169,4 @@ public class LibraryParser {
         }
         System.out.println("</" + e.getName() + ">");
     }
-
 }

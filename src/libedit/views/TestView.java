@@ -18,6 +18,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import libedit.LibraryParser;
+import libedit.fileio.FileChooser;
 import libedit.models.abstractobjects.EagleObj;
 import libedit.models.containers.Pkg;
 import libedit.models.factories.PatternFactory;
@@ -27,19 +29,20 @@ import net.miginfocom.swing.MigLayout;
 
 public class TestView extends JDialog {
 
-    private final JPanel     contentPanel  = new JPanel();
-    static String            libraryPath   = "C:/test_short.xml";
+    private final JPanel     contentPanel          = new JPanel();
     static Pkg               pkg;
-    private PackagePreviewer previewer     = new PackagePreviewer();
+    private PackagePreviewer previewer             = new PackagePreviewer();
     private JTextField       padHeight;
     private JTextField       padWidth;
     private JTextField       overallHeight;
     private JTextField       overallWidth;
-    private JSpinner         upPadCount    = new JSpinner();
-    private JSpinner         downPadCount  = new JSpinner();
-    private JSpinner         leftPadCount  = new JSpinner();
-    private JSpinner         rightPadCount = new JSpinner();
+    private JSpinner         upPadCount            = new JSpinner();
+    private JSpinner         downPadCount          = new JSpinner();
+    private JSpinner         leftPadCount          = new JSpinner();
+    private JSpinner         rightPadCount         = new JSpinner();
     private JTextField       padPitch;
+    private final int        DEFAULT_PINS_PER_SIDE = 7;
+    private JTextField       txtPackageName;
 
     /**
      * Launch the application.
@@ -52,31 +55,13 @@ public class TestView extends JDialog {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //
-        // Document jdom = LibraryParser.parseXML(libraryPath);
-        //
-        // EagleDoc eagleDoc = new EagleDoc(jdom.getRootElement());
-        //
-        // LibraryParser.printFile(jdom);
-        // System.out.println("\n\n\n");
-        //
-        // Library lib = (Library) eagleDoc.getObjByType(Library.class);
-        // lib.printContents();
-        // System.out.println("\n\n\n");
-        //
-        // PadCount pc = new PadCount(2, 0, 8, 0);
-        // PadSize ps = new PadSize(1.12f, 0.5f);
-        // List<EagleObj> pkgChildren = PatternFactory.createSMDPattern(pc, ps,
-        // 1.5f, 15, 15, true);
-        // pkg = new Pkg("a_new_package_with_long_name", pkgChildren);
-
     }
 
     /**
      * Create the dialog.
      */
     public TestView() {
-        setBounds(100, 100, 577, 398);
+        setBounds(100, 100, 577, 629);
         getContentPane().setLayout(new BorderLayout());
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -91,6 +76,17 @@ public class TestView extends JDialog {
                         previewer.setPackage(pkg);
                     }
                 });
+                {
+                    JButton btnSaveToLibrary = new JButton("Save to Library...");
+                    btnSaveToLibrary.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent arg0) {
+                            if (new FileChooser().showChooser()) {
+                                LibraryParser.savePackageToLibrary(pkg, FileChooser.getPath());
+                            }
+                        }
+                    });
+                    buttonPane.add(btnSaveToLibrary);
+                }
                 buttonPane.add(btnLoadComponent);
             }
             {
@@ -111,7 +107,8 @@ public class TestView extends JDialog {
                 buttonPane.add(cancelButton);
             }
         }
-        contentPanel.setLayout(new MigLayout("", "[10px,grow][300][grow]", "[10px][grow][300,grow][grow]"));
+        contentPanel
+                .setLayout(new MigLayout("", "[grow][10px][300][grow]", "[10px][35:35:35][300:300:300,grow][grow]"));
         previewer.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -120,11 +117,33 @@ public class TestView extends JDialog {
         });
         {
             JPanel panel = new JPanel();
-            contentPanel.add(panel, "cell 0 2,grow");
+            contentPanel.add(panel, "cell 1 1 2 1,grow");
+            panel.setLayout(new MigLayout("", "[74px][86px,grow]", "[20px,grow]"));
+            {
+                JLabel lblPackageName = new JLabel("Package Name:");
+                panel.add(lblPackageName, "cell 0 0,alignx left,aligny center");
+            }
+            {
+                txtPackageName = new JTextField();
+                txtPackageName.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        String cleanTxt = txtPackageName.getText().trim().toUpperCase().replace(" ", "_");
+                        txtPackageName.setText(cleanTxt);
+                        updatePackage();
+                    }
+                });
+                txtPackageName.setText("NEW_PACKAGE");
+                panel.add(txtPackageName, "cell 1 0,grow");
+                txtPackageName.setColumns(10);
+            }
+        }
+        {
+            JPanel panel = new JPanel();
+            contentPanel.add(panel, "cell 1 2,grow");
             panel.setLayout(new MigLayout("", "[50,grow][50,grow][50,grow,fill]", "[][][][][][][][][][]"));
             {
-                JLabel lblPinCount = new JLabel("Pin Count");
-                panel.add(lblPinCount, "cell 1 0");
+                JLabel lblPadCount = new JLabel("SMD Pad Count");
+                panel.add(lblPadCount, "cell 0 0 3 1,alignx center");
             }
             {
                 upPadCount.addChangeListener(new ChangeListener() {
@@ -134,7 +153,7 @@ public class TestView extends JDialog {
                 });
 
                 panel.add(upPadCount, "cell 1 1,growx");
-                upPadCount.setValue(4);
+                upPadCount.setValue(DEFAULT_PINS_PER_SIDE);
             }
             {
                 leftPadCount.addChangeListener(new ChangeListener() {
@@ -142,7 +161,7 @@ public class TestView extends JDialog {
                         updatePackage();
                     }
                 });
-                leftPadCount.setValue(4);
+                leftPadCount.setValue(DEFAULT_PINS_PER_SIDE);
                 panel.add(leftPadCount, "cell 0 2,growx");
             }
             {
@@ -152,7 +171,7 @@ public class TestView extends JDialog {
                     }
                 });
                 panel.add(rightPadCount, "cell 2 2");
-                rightPadCount.setValue(4);
+                rightPadCount.setValue(DEFAULT_PINS_PER_SIDE);
             }
             {
                 downPadCount.addChangeListener(new ChangeListener() {
@@ -161,7 +180,7 @@ public class TestView extends JDialog {
                     }
                 });
                 panel.add(downPadCount, "cell 1 3,growx");
-                downPadCount.setValue(4);
+                downPadCount.setValue(DEFAULT_PINS_PER_SIDE);
             }
             {
                 JLabel lblPitch = new JLabel("Pitch");
@@ -223,7 +242,7 @@ public class TestView extends JDialog {
                         updatePackage();
                     }
                 });
-                overallHeight.setText("5");
+                overallHeight.setText("20");
                 panel.add(overallHeight, "cell 0 9,growx");
                 overallHeight.setColumns(10);
             }
@@ -234,16 +253,15 @@ public class TestView extends JDialog {
                         updatePackage();
                     }
                 });
-                overallWidth.setText("25");
+                overallWidth.setText("20");
                 panel.add(overallWidth, "cell 2 9,growx");
                 overallWidth.setColumns(10);
             }
         }
-        contentPanel.add(previewer, "cell 1 2,grow");
+        contentPanel.add(previewer, "cell 2 2,grow");
     }
 
     private void updatePackage() {
-        System.out.println("Updating package");
         int down = (int) downPadCount.getValue();
         int right = (int) rightPadCount.getValue();
         int up = (int) upPadCount.getValue();
@@ -263,9 +281,8 @@ public class TestView extends JDialog {
         float pitch = Float.parseFloat(padPitch.getText());
 
         List<EagleObj> pkgChildren = PatternFactory.createSMDPattern(pc, ps, pitch, oaHeight, oaWidth, true);
-        pkg = new Pkg("a_new_package_with_long_name", pkgChildren);
+        pkg = new Pkg(txtPackageName.getText(), pkgChildren);
         previewer.setPackage(pkg);
-
         previewer.repaint();
     }
 
