@@ -50,8 +50,8 @@ public class Layer extends EagleObj {
         xml.setAttribute("name", name);
         xml.setAttribute("color", Integer.toString(color));
         xml.setAttribute("fill", Integer.toString(fill));
-        xml.setAttribute("visible", Boolean.toString(visible));
-        xml.setAttribute("active", Boolean.toString(active));
+        xml.setAttribute("visible", visible ? "yes" : "no");
+        xml.setAttribute("active", active ? "yes" : "no");
         return xml;
     }
 

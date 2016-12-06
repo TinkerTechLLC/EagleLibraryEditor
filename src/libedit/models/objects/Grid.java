@@ -43,12 +43,12 @@ public class Grid extends EagleObj {
         xml.setAttribute("distance", Float.toString(distance));
         xml.setAttribute("altdistance", Float.toString(altdistance));
         xml.setAttribute("unitdist", unitdist.toString().toLowerCase());
-        xml.setAttribute("unitdist", unit.toString().toLowerCase());
-        xml.setAttribute("unitdist", altunitdist.toString().toLowerCase());
-        xml.setAttribute("unitdist", altunit.toString().toLowerCase());
+        xml.setAttribute("unit", unit.toString().toLowerCase());
+        xml.setAttribute("altunitdist", altunitdist.toString().toLowerCase());
+        xml.setAttribute("altunit", altunit.toString().toLowerCase());
         xml.setAttribute("style", style);
         xml.setAttribute("multiple", Integer.toString(multiple));
-        xml.setAttribute("display", Boolean.toString(display));
+        xml.setAttribute("display", display ? "yes" : "no");
         return xml;
     }
 

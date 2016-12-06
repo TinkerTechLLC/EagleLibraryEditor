@@ -114,6 +114,7 @@ public class SMD extends EagleObj {
         xml.setAttribute("dx", Float.toString(dx));
         xml.setAttribute("dy", Float.toString(dy));
         xml.setAttribute("layer", Integer.toString(layer));
+        xml.setAttribute("rot", rot.toString());
         return xml;
     }
 
