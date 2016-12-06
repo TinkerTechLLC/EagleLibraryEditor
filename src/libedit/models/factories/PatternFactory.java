@@ -81,33 +81,33 @@ public class PatternFactory {
         List<EagleObj> pattern = new ArrayList<EagleObj>();
 
         int layer = topLayer ? Layers.TOP : Layers.BOTTOM;
-        float dx, dy;
+        float x, y;
         PadCount pc = padCount;
         List<Float> params = new ArrayList<Float>();
         final int PARAM_COUNT = 2;
         for (int i = 0; i < pc.down; i++) {
-            dx = -(((float) pc.down - 1) / 2 * pitch) + i * pitch;
-            dy = -(oaHeight - padShape.height) / 2;
-            params.add(dx);
-            params.add(dy);
+            x = -(((float) pc.down - 1) / 2 * pitch) + i * pitch;
+            y = -(oaHeight - padShape.height) / 2;
+            params.add(x);
+            params.add(y);
         }
         for (int i = 0; i < pc.right; i++) {
-            dx = (oaWidth - padShape.width) / 2;
-            dy = -(((float) pc.right - 1) / 2 * pitch) + i * pitch;
-            params.add(dx);
-            params.add(dy);
+            x = (oaWidth - padShape.width) / 2;
+            y = -(((float) pc.right - 1) / 2 * pitch) + i * pitch;
+            params.add(x);
+            params.add(y);
         }
         for (int i = 0; i < pc.up; i++) {
-            dx = (((float) pc.up - 1) / 2 * pitch) - i * pitch;
-            dy = (oaHeight - padShape.height) / 2;
-            params.add(dx);
-            params.add(dy);
+            x = (((float) pc.up - 1) / 2 * pitch) - i * pitch;
+            y = (oaHeight - padShape.height) / 2;
+            params.add(x);
+            params.add(y);
         }
         for (int i = 0; i < pc.left; i++) {
-            dx = -(oaWidth - padShape.width) / 2;
-            dy = (((float) pc.left - 1) / 2 * pitch) - i * pitch;
-            params.add(dx);
-            params.add(dy);
+            x = -(oaWidth - padShape.width) / 2;
+            y = (((float) pc.left - 1) / 2 * pitch) - i * pitch;
+            params.add(x);
+            params.add(y);
         }
 
         for (int i = 0; i < pc.totalPads(); i++) {
@@ -127,8 +127,9 @@ public class PatternFactory {
             else {
                 rot = Rotation.R90;
             }
-            SMD smd = new SMD(Integer.toString(pin), padShape.width, padShape.height,
-                    params.get(i * PARAM_COUNT), params.get(i * PARAM_COUNT + 1), layer, rot);
+            SMD smd = new SMD(Integer.toString(pin),
+                    params.get(i * PARAM_COUNT), params.get(i * PARAM_COUNT + 1),
+                    padShape.width, padShape.height, layer, rot);
             pattern.add(smd);
         }
 
