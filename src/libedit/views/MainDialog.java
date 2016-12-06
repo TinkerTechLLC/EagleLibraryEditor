@@ -27,7 +27,7 @@ import libedit.models.factories.PatternFactory.PadCount;
 import libedit.models.factories.PatternFactory.PadSize;
 import net.miginfocom.swing.MigLayout;
 
-public class TestView extends JDialog {
+public class MainDialog extends JDialog {
 
     private final JPanel     contentPanel          = new JPanel();
     static Pkg               pkg;
@@ -49,7 +49,7 @@ public class TestView extends JDialog {
      */
     public static void main(String[] args) {
         try {
-            TestView dialog = new TestView();
+            MainDialog dialog = new MainDialog();
             dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             dialog.setVisible(true);
         } catch (Exception e) {
@@ -60,7 +60,7 @@ public class TestView extends JDialog {
     /**
      * Create the dialog.
      */
-    public TestView() {
+    public MainDialog() {
         setBounds(100, 100, 577, 629);
         getContentPane().setLayout(new BorderLayout());
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
