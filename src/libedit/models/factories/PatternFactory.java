@@ -46,11 +46,11 @@ public class PatternFactory {
     }
 
     static public class PadSize {
-        public float height, width;
+        public float width, height;
 
-        public PadSize(float height, float width) {
-            this.height = height;
+        public PadSize(float width, float height) {
             this.width = width;
+            this.height = height;
         }
 
     }
@@ -76,7 +76,7 @@ public class PatternFactory {
      */
     static public List<EagleObj> createSMDPattern(
             PadCount padCount, PadSize padShape,
-            float pitch, float oaHeight, float oaWidth,
+            float pitch, float oaWidth, float oaHeight,
             boolean topLayer) {
         List<EagleObj> pattern = new ArrayList<EagleObj>();
 
