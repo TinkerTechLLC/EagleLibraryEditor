@@ -8,6 +8,7 @@ import org.jdom2.Element;
 import libedit.models.abstractobjects.EagleContainer;
 import libedit.models.abstractobjects.EagleObj;
 import libedit.models.objects.SMD;
+import libedit.models.objects.Wire;
 
 public class Pkg extends EagleContainer {
 
@@ -62,6 +63,16 @@ public class Pkg extends EagleContainer {
         for (EagleObj o : this.children) {
             if (o.isSMD()) {
                 ret.add((SMD) o);
+            }
+        }
+        return ret;
+    }
+
+    public List<Wire> getWires() {
+        List<Wire> ret = new ArrayList<Wire>();
+        for (EagleObj o : this.children) {
+            if (o.isWire()) {
+                ret.add((Wire) o);
             }
         }
         return ret;
