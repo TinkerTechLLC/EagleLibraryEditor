@@ -12,9 +12,11 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -28,6 +30,7 @@ import libedit.models.factories.PatternFactory.PadCount;
 import libedit.models.factories.PatternFactory.PadSize;
 import net.miginfocom.swing.MigLayout;
 
+@SuppressWarnings("serial")
 public class MainDialog extends JDialog {
 
     private final JPanel     contentPanel          = new JPanel();
@@ -146,7 +149,7 @@ public class MainDialog extends JDialog {
             contentPanel.add(tabbedPane, "cell 1 2,grow");
             {
                 JPanel outlinePanel = new JPanel();
-                tabbedPane.addTab("New tab", null, outlinePanel, null);
+                tabbedPane.addTab("Outline", null, outlinePanel, null);
                 outlinePanel.setLayout(new MigLayout("", "[grow][][grow]", "[][]"));
                 {
                     JLabel lblPackageHeight = new JLabel("Package Height");
@@ -171,8 +174,8 @@ public class MainDialog extends JDialog {
             }
             {
                 JPanel smdPanel = new JPanel();
-                tabbedPane.addTab("New tab", null, smdPanel, null);
-                smdPanel.setLayout(new MigLayout("", "[50,grow][50,grow][50,grow,fill]", "[][][][][][][][][][]"));
+                tabbedPane.addTab("SMD", null, smdPanel, null);
+                smdPanel.setLayout(new MigLayout("", "[50][50][50,fill]", "[][][][][][][][][][][][][][]"));
                 {
                     JLabel lblPadCount = new JLabel("SMD Pad Count");
                     smdPanel.add(lblPadCount, "cell 0 0 3 1,alignx center");
@@ -215,41 +218,39 @@ public class MainDialog extends JDialog {
                     downPadCount.setValue(DEFAULT_PINS_PER_SIDE);
                 }
                 {
-                    JLabel lblPitch = new JLabel("Pitch");
-                    smdPanel.add(lblPitch, "cell 1 4,alignx center");
+                    JSeparator separator = new JSeparator();
+                    smdPanel.add(separator, "cell 0 4 3 1,growx");
                 }
                 {
-                    padPitch = new JTextField();
-                    padPitch.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent arg0) {
-                            updatePackage();
-                        }
-                    });
-                    padPitch.setText("2");
-                    smdPanel.add(padPitch, "cell 1 5,growx");
-                    padPitch.setColumns(10);
+                    JLabel lblPadShape = new JLabel("Pad Shape");
+                    smdPanel.add(lblPadShape, "cell 0 5 3 1,alignx center");
                 }
                 {
-                    JLabel lblPadHeight = new JLabel("Pad Height");
+                    JLabel lblPadHeight = new JLabel("Height");
                     smdPanel.add(lblPadHeight, "cell 0 6,alignx center");
                 }
                 {
-                    JLabel lblPadWidth = new JLabel("Pad Width");
-                    smdPanel.add(lblPadWidth, "cell 2 6,alignx center");
-                }
-                {
-                    padHeight = new JTextField();
-                    padHeight.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent arg0) {
-                            updatePackage();
+                    {
+                        padHeight = new JTextField();
+                        padHeight.setHorizontalAlignment(SwingConstants.CENTER);
+                        padHeight.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent arg0) {
+                                updatePackage();
+                            }
+                        });
+                        {
+                            JLabel lblPadWidth = new JLabel("Width");
+                            lblPadWidth.setHorizontalAlignment(SwingConstants.CENTER);
+                            smdPanel.add(lblPadWidth, "cell 2 6,alignx center");
                         }
-                    });
-                    padHeight.setText("2");
-                    smdPanel.add(padHeight, "cell 0 7,growx");
-                    padHeight.setColumns(10);
+                        padHeight.setText("2");
+                        smdPanel.add(padHeight, "cell 0 7,growx");
+                        padHeight.setColumns(10);
+                    }
                 }
                 {
                     padWidth = new JTextField();
+                    padWidth.setHorizontalAlignment(SwingConstants.CENTER);
                     padWidth.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent arg0) {
                             updatePackage();
@@ -260,35 +261,64 @@ public class MainDialog extends JDialog {
                     padWidth.setColumns(10);
                 }
                 {
-                    JLabel lblOverallHeight = new JLabel("Overall Height");
-                    smdPanel.add(lblOverallHeight, "cell 0 8,alignx center");
+                    JSeparator separator = new JSeparator();
+                    smdPanel.add(separator, "cell 0 8 3 1,growx");
                 }
                 {
-                    JLabel lblOverallWidth = new JLabel("Overall Width");
-                    smdPanel.add(lblOverallWidth, "cell 2 8,alignx center");
+                    JLabel lblPadLayout = new JLabel("Pad Layout");
+                    smdPanel.add(lblPadLayout, "cell 0 9 3 1,alignx center");
+                }
+                {
+                    JLabel lblOverallHeight = new JLabel("Height");
+                    smdPanel.add(lblOverallHeight, "cell 0 10,alignx center");
                 }
                 {
                     overallHeight = new JTextField();
+                    overallHeight.setHorizontalAlignment(SwingConstants.CENTER);
                     overallHeight.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent arg0) {
                             updatePackage();
                         }
                     });
+                    {
+                        JLabel lblOverallWidth = new JLabel("Width");
+                        lblOverallWidth.setHorizontalAlignment(SwingConstants.CENTER);
+                        smdPanel.add(lblOverallWidth, "cell 2 10,alignx center");
+                    }
                     overallHeight.setText("20");
-                    smdPanel.add(overallHeight, "cell 0 9,growx");
+                    smdPanel.add(overallHeight, "cell 0 11,growx");
                     overallHeight.setColumns(10);
                 }
+                padPitch = new JTextField();
+                padPitch.setHorizontalAlignment(SwingConstants.CENTER);
+                padPitch.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent arg0) {
+                        updatePackage();
+                    }
+                });
                 {
                     overallWidth = new JTextField();
+                    overallWidth.setHorizontalAlignment(SwingConstants.CENTER);
                     overallWidth.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent arg0) {
                             updatePackage();
                         }
                     });
                     overallWidth.setText("20");
-                    smdPanel.add(overallWidth, "cell 2 9,growx");
+                    smdPanel.add(overallWidth, "cell 2 11,growx");
                     overallWidth.setColumns(10);
                 }
+                {
+                    JLabel lblPitch = new JLabel("Pitch");
+                    smdPanel.add(lblPitch, "cell 1 12,alignx center");
+                }
+                padPitch.setText("2");
+                smdPanel.add(padPitch, "cell 1 13,growx");
+                padPitch.setColumns(10);
+            }
+            {
+                JPanel panel = new JPanel();
+                tabbedPane.addTab("Thru Hole", null, panel, null);
             }
         }
         contentPanel.add(previewer, "cell 2 2,grow");
