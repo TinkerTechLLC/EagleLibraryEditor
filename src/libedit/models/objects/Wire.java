@@ -1,5 +1,7 @@
 package libedit.models.objects;
 
+import java.awt.geom.Point2D;
+
 import org.jdom2.DataConversionException;
 import org.jdom2.Element;
 
@@ -70,6 +72,14 @@ public class Wire extends EagleObj {
 
     public void setLayer(int layer) {
         this.layer = layer;
+    }
+
+    public Point2D.Float getP1() {
+        return new Point2D.Float(x1, y1);
+    }
+
+    public Point2D.Float getP2() {
+        return new Point2D.Float(x2, y2);
     }
 
     @Override
