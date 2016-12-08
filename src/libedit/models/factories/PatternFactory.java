@@ -58,6 +58,24 @@ public class PatternFactory {
     }
 
     /**
+     * Convenience method for creating an SMD pattern with starting pin at 1.
+     * 
+     * @param padCount
+     * @param padShape
+     * @param pitch
+     * @param oaWidth
+     * @param oaHeight
+     * @param topLayer
+     * @return
+     */
+    static public List<EagleObj> createSMDPattern(
+            PadCount padCount, PadSize padShape,
+            float pitch, float oaWidth, float oaHeight,
+            boolean topLayer) {
+        return createSMDPattern(padCount, padShape, pitch, oaWidth, oaHeight, topLayer, 1);
+    }
+
+    /**
      * Creates a list of SMD pads centered around (0,0) point, based upon
      * pattern input parameters
      * 
@@ -79,7 +97,7 @@ public class PatternFactory {
     static public List<EagleObj> createSMDPattern(
             PadCount padCount, PadSize padShape,
             float pitch, float oaWidth, float oaHeight,
-            boolean topLayer) {
+            boolean topLayer, int startingPin) {
         List<EagleObj> pattern = new ArrayList<EagleObj>();
 
         int layer = topLayer ? Layers.TOP : Layers.BOTTOM;
@@ -123,7 +141,7 @@ public class PatternFactory {
         // Set rotation for each pad and add to return list
         for (int i = 0; i < pc.totalPads(); i++) {
             Rotation rot;
-            int pin = i + 1;
+            int pin = i + startingPin;
             if (pin < pc.firstPadNum(Direction.RIGHT)) {
                 rot = Rotation.R0;
             }
