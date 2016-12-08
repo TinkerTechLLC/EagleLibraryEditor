@@ -6,17 +6,25 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JSeparator;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -33,22 +41,24 @@ import net.miginfocom.swing.MigLayout;
 @SuppressWarnings("serial")
 public class MainDialog extends JDialog {
 
-    private final JPanel     contentPanel          = new JPanel();
-    static Pkg               pkg;
-    private PackagePreviewer previewer             = new PackagePreviewer();
-    private JTextField       padHeight;
-    private JTextField       padWidth;
-    private JTextField       overallHeight;
-    private JTextField       overallWidth;
-    private JSpinner         upPadCount            = new JSpinner();
-    private JSpinner         downPadCount          = new JSpinner();
-    private JSpinner         leftPadCount          = new JSpinner();
-    private JSpinner         rightPadCount         = new JSpinner();
-    private JTextField       padPitch;
-    private final int        DEFAULT_PINS_PER_SIDE = 7;
-    private JTextField       txtPackageName;
-    private JTextField       textPackageHeight;
-    private JTextField       textPackageWidth;
+    private final JPanel      contentPanel          = new JPanel();
+    static Pkg                pkg;
+    private PackagePreviewer  previewer             = new PackagePreviewer();
+    private JTextField        padHeight;
+    private JTextField        padWidth;
+    private JTextField        overallHeight;
+    private JTextField        overallWidth;
+    private JSpinner          upPadCount            = new JSpinner();
+    private JSpinner          downPadCount          = new JSpinner();
+    private JSpinner          leftPadCount          = new JSpinner();
+    private JSpinner          rightPadCount         = new JSpinner();
+    private JTextField        padPitch;
+    private final int         DEFAULT_PINS_PER_SIDE = 3;
+    private JTextField        txtPackageName;
+    private JTextField        textPackageHeight;
+    private JTextField        textPackageWidth;
+    private final ButtonGroup layerButtons          = new ButtonGroup();
+    private JRadioButton      rdbtnTop;
 
     /**
      * Launch the application.
@@ -76,12 +86,6 @@ public class MainDialog extends JDialog {
             buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
             getContentPane().add(buttonPane, BorderLayout.SOUTH);
             {
-                JButton btnLoadComponent = new JButton("Load Component");
-                btnLoadComponent.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent arg0) {
-                        previewer.setPackage(pkg);
-                    }
-                });
                 {
                     JButton btnSaveToLibrary = new JButton("Save to Library...");
                     btnSaveToLibrary.addActionListener(new ActionListener() {
@@ -93,35 +97,12 @@ public class MainDialog extends JDialog {
                     });
                     buttonPane.add(btnSaveToLibrary);
                 }
-                buttonPane.add(btnLoadComponent);
-            }
-            {
-                JButton okButton = new JButton("OK");
-                okButton.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent arg0) {
-                        System.out.println(previewer.getSize());
-                        previewer.repaint();
-                    }
-                });
-                okButton.setActionCommand("OK");
-                buttonPane.add(okButton);
-                getRootPane().setDefaultButton(okButton);
-            }
-            {
-                JButton cancelButton = new JButton("Cancel");
-                cancelButton.setActionCommand("Cancel");
-                buttonPane.add(cancelButton);
             }
         }
         contentPanel
                 .setLayout(
-                        new MigLayout("", "[grow][10px,grow][300][grow]", "[10px][35:35:35][300:300:300,grow][grow]"));
-        previewer.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent arg0) {
-                System.out.println("Previewer clicked");
-            }
-        });
+                        new MigLayout("", "[grow][10px,grow][300,grow][grow]",
+                                "[10px][35:35:35][300:379.00:300][grow]"));
         {
             JPanel panel = new JPanel();
             contentPanel.add(panel, "cell 1 1 2 1,grow");
@@ -146,7 +127,7 @@ public class MainDialog extends JDialog {
         }
         {
             JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-            contentPanel.add(tabbedPane, "cell 1 2,grow");
+            contentPanel.add(tabbedPane, "cell 1 2 1 2,grow");
             {
                 JPanel outlinePanel = new JPanel();
                 tabbedPane.addTab("Outline", null, outlinePanel, null);
@@ -161,13 +142,23 @@ public class MainDialog extends JDialog {
                 }
                 {
                     textPackageHeight = new JTextField();
-                    textPackageHeight.setText("17");
+                    textPackageHeight.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent arg0) {
+                            updatePackage();
+                        }
+                    });
+                    textPackageHeight.setText("8");
                     outlinePanel.add(textPackageHeight, "cell 0 1,growx");
                     textPackageHeight.setColumns(10);
                 }
                 {
                     textPackageWidth = new JTextField();
-                    textPackageWidth.setText("17");
+                    textPackageWidth.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            updatePackage();
+                        }
+                    });
+                    textPackageWidth.setText("8");
                     outlinePanel.add(textPackageWidth, "cell 2 1,growx");
                     textPackageWidth.setColumns(10);
                 }
@@ -175,7 +166,7 @@ public class MainDialog extends JDialog {
             {
                 JPanel smdPanel = new JPanel();
                 tabbedPane.addTab("SMD", null, smdPanel, null);
-                smdPanel.setLayout(new MigLayout("", "[50][50][50,fill]", "[][][][][][][][][][][][][][]"));
+                smdPanel.setLayout(new MigLayout("", "[50,grow][50][50,fill]", "[][][][][][][][][][][][][][][grow]"));
                 {
                     JLabel lblPadCount = new JLabel("SMD Pad Count");
                     smdPanel.add(lblPadCount, "cell 0 0 3 1,alignx center");
@@ -191,6 +182,7 @@ public class MainDialog extends JDialog {
                     upPadCount.setValue(DEFAULT_PINS_PER_SIDE);
                 }
                 {
+                    leftPadCount.setModel(new SpinnerNumberModel(new Integer(3), null, null, new Integer(1)));
                     leftPadCount.addChangeListener(new ChangeListener() {
                         public void stateChanged(ChangeEvent e) {
                             updatePackage();
@@ -256,7 +248,7 @@ public class MainDialog extends JDialog {
                             updatePackage();
                         }
                     });
-                    padWidth.setText("1");
+                    padWidth.setText("0.5");
                     smdPanel.add(padWidth, "cell 2 7,growx");
                     padWidth.setColumns(10);
                 }
@@ -283,19 +275,16 @@ public class MainDialog extends JDialog {
                     {
                         JLabel lblOverallWidth = new JLabel("Width");
                         lblOverallWidth.setHorizontalAlignment(SwingConstants.CENTER);
-                        smdPanel.add(lblOverallWidth, "cell 2 10,alignx center");
+                        smdPanel.add(lblOverallWidth, "cell 1 10,alignx center");
                     }
-                    overallHeight.setText("20");
+                    {
+                        JLabel lblPitch = new JLabel("Pitch");
+                        smdPanel.add(lblPitch, "cell 2 10,alignx center");
+                    }
+                    overallHeight.setText("10");
                     smdPanel.add(overallHeight, "cell 0 11,growx");
                     overallHeight.setColumns(10);
                 }
-                padPitch = new JTextField();
-                padPitch.setHorizontalAlignment(SwingConstants.CENTER);
-                padPitch.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent arg0) {
-                        updatePackage();
-                    }
-                });
                 {
                     overallWidth = new JTextField();
                     overallWidth.setHorizontalAlignment(SwingConstants.CENTER);
@@ -304,49 +293,133 @@ public class MainDialog extends JDialog {
                             updatePackage();
                         }
                     });
-                    overallWidth.setText("20");
-                    smdPanel.add(overallWidth, "cell 2 11,growx");
+                    overallWidth.setText("10");
+                    smdPanel.add(overallWidth, "cell 1 11,growx");
                     overallWidth.setColumns(10);
                 }
-                {
-                    JLabel lblPitch = new JLabel("Pitch");
-                    smdPanel.add(lblPitch, "cell 1 12,alignx center");
-                }
-                padPitch.setText("2");
-                smdPanel.add(padPitch, "cell 1 13,growx");
+                padPitch = new JTextField();
+                padPitch.setHorizontalAlignment(SwingConstants.CENTER);
+                padPitch.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent arg0) {
+                        updatePackage();
+                    }
+                });
+                padPitch.setText("1");
+                smdPanel.add(padPitch, "cell 2 11,growx");
                 padPitch.setColumns(10);
+                {
+                    JSeparator separator = new JSeparator();
+                    smdPanel.add(separator, "cell 0 12 3 1,growx");
+                }
+                {
+                    JLabel lblLayer = new JLabel("Layer");
+                    smdPanel.add(lblLayer, "cell 1 13,alignx center");
+                }
+                {
+                    JPanel panel = new JPanel();
+                    smdPanel.add(panel, "cell 0 14 3 1,grow");
+                    {
+                        rdbtnTop = new JRadioButton("Top");
+                        rdbtnTop.addChangeListener(new ChangeListener() {
+                            public void stateChanged(ChangeEvent arg0) {
+                                updatePackage();
+                            }
+                        });
+                        layerButtons.add(rdbtnTop);
+                        rdbtnTop.setSelected(true);
+                        panel.add(rdbtnTop);
+                    }
+                    {
+                        JRadioButton rdbtnBottom = new JRadioButton("Bottom");
+                        layerButtons.add(rdbtnBottom);
+                        panel.add(rdbtnBottom);
+                    }
+                }
             }
             {
                 JPanel panel = new JPanel();
                 tabbedPane.addTab("Thru Hole", null, panel, null);
             }
         }
-        contentPanel.add(previewer, "cell 2 2,grow");
+        {
+            JPanel previewerContainer = new JPanel();
+            previewerContainer.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+            contentPanel.add(previewerContainer, "cell 2 2,grow");
+            previewerContainer
+                    .setLayout(new MigLayout("ins 0", "[grow][300:300:300][grow]", "[grow][300:300px:300px][grow]"));
+            previewerContainer.add(previewer, "cell 1 1,grow");
+            previewer.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent arg0) {
+                    System.out.println("Previewer clicked");
+                }
+            });
+        }
+        {
+            JMenuBar menuBar = new JMenuBar();
+            setJMenuBar(menuBar);
+            {
+                JMenu mnFile = new JMenu("File");
+                menuBar.add(mnFile);
+                {
+                    JMenuItem mntmExit = new JMenuItem("Exit");
+                    mntmExit.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            System.exit(0);
+                        }
+                    });
+                    mnFile.add(mntmExit);
+                }
+            }
+        }
     }
 
-    private void updatePackage() {
+    private PadCount getPadCount() throws NullPointerException {
         int down = (int) downPadCount.getValue();
         int right = (int) rightPadCount.getValue();
         int up = (int) upPadCount.getValue();
         int left = (int) leftPadCount.getValue();
-        PadCount pc = new PadCount(down, right, up, left);
+        return new PadCount(down, right, up, left);
+    }
 
-        if (padHeight == null)
-            return;
-
-        float pHeight = Float.parseFloat(padHeight.getText());
+    private PadSize getPadSize() throws NullPointerException {
         float pWidth = Float.parseFloat(padWidth.getText());
-        PadSize ps = new PadSize(pHeight, pWidth);
+        float pHeight = Float.parseFloat(padHeight.getText());
+        return new PadSize(pWidth, pHeight);
+    }
 
-        float oaHeight = Float.parseFloat(overallHeight.getText());
-        float oaWidth = Float.parseFloat(overallWidth.getText());
+    private void updatePackage() {
+        // A NullPointerException will be thrown when first instantiating the
+        // GUI. It's okay to just ignore it.
+        try {
+            List<EagleObj> pkgChildren = new ArrayList<EagleObj>();
 
-        float pitch = Float.parseFloat(padPitch.getText());
+            // Get values for SMD pattern and add pattern to children
+            PadCount pc = getPadCount();
+            PadSize ps = getPadSize();
 
-        List<EagleObj> pkgChildren = PatternFactory.createSMDPattern(pc, ps, pitch, oaHeight, oaWidth, true);
-        pkg = new Pkg(txtPackageName.getText(), pkgChildren);
-        previewer.setPackage(pkg);
-        previewer.repaint();
+            float oaHeight = Float.parseFloat(overallHeight.getText());
+            float oaWidth = Float.parseFloat(overallWidth.getText());
+
+            float pitch = Float.parseFloat(padPitch.getText());
+            boolean topLayer = rdbtnTop.isSelected();
+
+            pkgChildren.addAll(PatternFactory.createSMDPattern(pc, ps, pitch, oaWidth, oaHeight, topLayer));
+
+            // Get values for package outline and add result to children
+            float pkgHeight = Float.parseFloat(textPackageHeight.getText());
+            float pkgWidth = Float.parseFloat(textPackageWidth.getText());
+
+            pkgChildren.addAll(PatternFactory.createSilkOutline(pkgWidth, pkgHeight, topLayer));
+
+            pkg = new Pkg(txtPackageName.getText(), pkgChildren);
+
+            previewer.setPackage(pkg);
+            previewer.repaint();
+
+        } catch (NullPointerException e) {
+            return;
+        }
     }
 
 }
