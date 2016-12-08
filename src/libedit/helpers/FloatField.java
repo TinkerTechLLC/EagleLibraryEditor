@@ -40,19 +40,23 @@ public class FloatField extends AbstractNumField<Float> {
             text = Float.toString(value);
             text = formatPlaces(text);
 
-            if (places == 0) {
-                text = text.substring(0, text.indexOf(".") - 1);
-            }
-            else {
-                // Trim if necessary
-                int decimalIndex = text.indexOf(".");
-                if (decimalIndex == -1) {
+            int decimalIndex = text.indexOf(".");
+
+            // Trim if necessary
+            if (decimalIndex == -1) {
+                if (places != 0) {
                     text = text + ".0";
                 }
-                else {
+            }
+            else {
+                if (places != 0) {
                     text = text.substring(0, decimalIndex + 1 + places);
                 }
+                else {
+                    text = text.substring(0, decimalIndex);
+                }
             }
+
             success = true;
         } catch (NumberFormatException e) {
             success = false;
