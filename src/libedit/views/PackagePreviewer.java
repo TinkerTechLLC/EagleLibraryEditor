@@ -19,7 +19,8 @@ import libedit.models.objects.Wire;
 
 public class PackagePreviewer extends JPanel {
 
-    PackagePreviewer pp = this;
+    PackagePreviewer pp        = this;
+    final int        MIN_RANGE = 4;
     float            range;
     Pkg              pkg;
 
@@ -30,6 +31,9 @@ public class PackagePreviewer extends JPanel {
         addMouseWheelListener(new MouseWheelListener() {
             public void mouseWheelMoved(MouseWheelEvent e) {
                 range += e.getWheelRotation();
+                if (range < MIN_RANGE) {
+                    range = MIN_RANGE;
+                }
                 pp.repaint();
             }
         });
