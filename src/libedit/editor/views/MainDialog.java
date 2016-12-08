@@ -16,7 +16,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -146,7 +145,7 @@ public class MainDialog extends JDialog {
             {
                 JPanel outlinePanel = new JPanel();
                 tabbedPane.addTab("Outline", null, outlinePanel, null);
-                outlinePanel.setLayout(new MigLayout("", "[grow][][grow]", "[][]"));
+                outlinePanel.setLayout(new MigLayout("", "[50][][50][]", "[][]"));
                 {
                     JLabel lblPackageHeight = new JLabel("Package Height");
                     outlinePanel.add(lblPackageHeight, "cell 0 0");
@@ -182,28 +181,11 @@ public class MainDialog extends JDialog {
                 JPanel smdPanel = new JPanel();
                 tabbedPane.addTab("SMD", null, smdPanel, null);
                 smdPanel.setLayout(
-                        new MigLayout("", "[100px,grow][50,grow][50,grow][50,grow,fill]",
+                        new MigLayout("", "[125px][50,grow][50,grow][50,grow,fill]",
                                 "[grow][][][][][][][][][][][][][][grow]"));
                 {
-                    JPanel panel = new JPanel();
-                    smdPanel.add(panel, "cell 0 0 1 15,grow");
-                    panel.setLayout(new MigLayout("", "[grow]", "[][grow][][]"));
-                    {
-                        JLabel lblSmdPattern = new JLabel("SMD Pattern");
-                        panel.add(lblSmdPattern, "cell 0 0,alignx center");
-                    }
-                    {
-                        JList list = new JList();
-                        panel.add(list, "cell 0 1,grow");
-                    }
-                    {
-                        JButton btnNewPattern = new JButton("New Pattern");
-                        panel.add(btnNewPattern, "cell 0 2,growx");
-                    }
-                    {
-                        JButton btnDeletePattern = new JButton("Delete Pattern");
-                        panel.add(btnDeletePattern, "cell 0 3,growx");
-                    }
+                    PatternSelector smdPatternSelector = new PatternSelector("SMD");
+                    smdPanel.add(smdPatternSelector, "cell 0 0 1 15,grow");
                 }
                 {
                     JLabel lblPadCount = new JLabel("SMD Pad Count");
@@ -375,21 +357,13 @@ public class MainDialog extends JDialog {
                 }
             }
             {
-                JPanel panel = new JPanel();
-                tabbedPane.addTab("Thru Hole", null, panel, null);
-                panel.setLayout(new MigLayout("", "[grow][]", "[125][]"));
+                JPanel thruHoldPanel = new JPanel();
+                tabbedPane.addTab("Thru Hole", null, thruHoldPanel, null);
+                thruHoldPanel.setLayout(new MigLayout("", "[125][]", "[125,grow]"));
                 {
-                    JLabel lblThruHolePatterns = new JLabel("Thru Hole Patterns");
-                    panel.add(lblThruHolePatterns, "flowy,cell 0 0,alignx center");
+                    PatternSelector panel = new PatternSelector("Through Hole");
+                    thruHoldPanel.add(panel, "cell 0 0,grow");
                 }
-                {
-                    JList list = new JList();
-                    panel.add(list, "cell 0 0,grow");
-                }
-            }
-            {
-                JPanel panel = new JPanel();
-                tabbedPane.addTab("New tab", null, panel, null);
             }
         }
         {
@@ -431,6 +405,8 @@ public class MainDialog extends JDialog {
                 messagePaneContainer.setLayout(new CardLayout(0, 0));
                 {
                     JTextPane messagePane = new JTextPane();
+                    messagePane.setEditable(false);
+                    messagePane.setText("No messages. That means you haven't broken anything yet.");
                     messagePaneContainer.add(messagePane, "name_263164151262789");
                 }
             }
