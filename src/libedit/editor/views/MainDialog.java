@@ -59,14 +59,14 @@ public class MainDialog extends JDialog {
     private JSpinner          downPadCount          = new JSpinner();
     private JSpinner          leftPadCount          = new JSpinner();
     private JSpinner          rightPadCount         = new JSpinner();
-    private JTextField        padPitch;
+    private FloatField        padPitch;
     private final int         DEFAULT_PINS_PER_SIDE = 3;
     private JTextField        txtPackageName;
     private FloatField        textPackageHeight;
     private FloatField        textPackageWidth;
     private final ButtonGroup layerButtons          = new ButtonGroup();
     private JRadioButton      rdbtnTop;
-    private JTextField        textField;
+    private FloatField        gridSize;
     // private JComboBox<String> comboBox;
 
     /**
@@ -317,7 +317,7 @@ public class MainDialog extends JDialog {
                     smdPanel.add(overallWidth, "cell 2 11,growx");
                     overallWidth.setColumns(10);
                 }
-                padPitch = new JTextField();
+                padPitch = new FloatField(2, 0, Float.MAX_VALUE);
                 padPitch.setHorizontalAlignment(SwingConstants.CENTER);
                 padPitch.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent arg0) {
@@ -379,6 +379,7 @@ public class MainDialog extends JDialog {
                 }
                 {
                     JComboBox<Object> unitSelect = new JComboBox<Object>(Unit.stringValues());
+                    unitSelect.setEnabled(false);
                     unitSelect.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent arg0) {
                             Unit newUnit = Unit.parseString((String) unitSelect.getSelectedItem());
@@ -392,10 +393,10 @@ public class MainDialog extends JDialog {
                     panel.add(lblGridSize, "cell 0 1,alignx trailing");
                 }
                 {
-                    textField = new JTextField();
-                    textField.setText("1");
-                    panel.add(textField, "cell 1 1,growx");
-                    textField.setColumns(10);
+                    gridSize = new FloatField(2, 0, Float.MAX_VALUE);
+                    gridSize.setText("1");
+                    panel.add(gridSize, "cell 1 1,growx");
+                    gridSize.setColumns(10);
                 }
             }
             {
@@ -444,6 +445,8 @@ public class MainDialog extends JDialog {
         es.registerUnitObserver(textPackageHeight);
         es.registerUnitObserver(textPackageWidth);
         es.registerGridObserver(previewer);
+        es.registerUnitObserver(gridSize);
+        es.registerUnitObserver(padPitch);
     }
 
     private PadCount getPadCount() throws NullPointerException {
