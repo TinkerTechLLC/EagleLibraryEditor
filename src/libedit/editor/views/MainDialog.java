@@ -161,7 +161,7 @@ public class MainDialog extends JDialog {
                             updatePackage();
                         }
                     });
-                    textPackageHeight.setText("8");
+                    textPackageHeight.setText("8.0");
                     outlinePanel.add(textPackageHeight, "cell 0 1,growx");
                     textPackageHeight.setColumns(10);
                 }
@@ -172,7 +172,7 @@ public class MainDialog extends JDialog {
                             updatePackage();
                         }
                     });
-                    textPackageWidth.setText("8");
+                    textPackageWidth.setText("8.0");
                     outlinePanel.add(textPackageWidth, "cell 2 1,growx");
                     textPackageWidth.setColumns(10);
                 }
@@ -255,7 +255,7 @@ public class MainDialog extends JDialog {
                             lblPadWidth.setHorizontalAlignment(SwingConstants.CENTER);
                             smdPanel.add(lblPadWidth, "cell 3 6,alignx center");
                         }
-                        padHeight.setText("2");
+                        padHeight.setText("2.0");
                         smdPanel.add(padHeight, "cell 1 7,growx");
                         padHeight.setColumns(10);
                     }
@@ -301,7 +301,7 @@ public class MainDialog extends JDialog {
                         JLabel lblPitch = new JLabel("Pitch");
                         smdPanel.add(lblPitch, "cell 3 10,alignx center");
                     }
-                    overallHeight.setText("10");
+                    overallHeight.setText("10.0");
                     smdPanel.add(overallHeight, "cell 1 11,growx");
                     overallHeight.setColumns(10);
                 }
@@ -313,7 +313,7 @@ public class MainDialog extends JDialog {
                             updatePackage();
                         }
                     });
-                    overallWidth.setText("10");
+                    overallWidth.setText("10.0");
                     smdPanel.add(overallWidth, "cell 2 11,growx");
                     overallWidth.setColumns(10);
                 }
@@ -324,7 +324,7 @@ public class MainDialog extends JDialog {
                         updatePackage();
                     }
                 });
-                padPitch.setText("1");
+                padPitch.setText("1.0");
                 smdPanel.add(padPitch, "cell 3 11,growx");
                 padPitch.setColumns(10);
                 {
@@ -394,7 +394,7 @@ public class MainDialog extends JDialog {
                 }
                 {
                     gridSize = new FloatField(2, 0, Float.MAX_VALUE);
-                    gridSize.setText("1");
+                    gridSize.setText("1.0");
                     panel.add(gridSize, "cell 1 1,growx");
                     gridSize.setColumns(10);
                 }
