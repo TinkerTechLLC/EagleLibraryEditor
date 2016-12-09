@@ -42,6 +42,10 @@ import libedit.eagle.models.factories.PatternFactory.PadCount;
 import libedit.eagle.models.factories.PatternFactory.PadSize;
 import libedit.editor.fileio.FileChooser;
 import libedit.editor.models.gui.EditorSettings;
+import libedit.editor.views.abstracts.PatternEditor;
+import libedit.editor.views.elements.PatternSelector;
+import libedit.editor.views.elements.SMDPanel;
+import libedit.editor.views.elements.ThruPanel;
 import libedit.helpers.FloatField;
 import net.miginfocom.swing.MigLayout;
 
@@ -178,13 +182,13 @@ public class MainDialog extends JDialog {
                 }
             }
             {
-                JPanel smdPanel = new JPanel();
+                SMDPanel smdPanel = new SMDPanel();
                 tabbedPane.addTab("SMD", null, smdPanel, null);
                 smdPanel.setLayout(
                         new MigLayout("", "[125px][50,grow][50,grow][50,grow,fill]",
                                 "[grow][][][][][][][][][][][][][][grow]"));
                 {
-                    PatternSelector smdPatternSelector = new PatternSelector("SMD");
+                    PatternSelector smdPatternSelector = new PatternSelector(smdPanel);
                     smdPanel.add(smdPatternSelector, "cell 0 0 1 15,grow");
                 }
                 {
@@ -357,13 +361,9 @@ public class MainDialog extends JDialog {
                 }
             }
             {
-                JPanel thruHoldPanel = new JPanel();
-                tabbedPane.addTab("Thru Hole", null, thruHoldPanel, null);
-                thruHoldPanel.setLayout(new MigLayout("", "[125][]", "[125,grow]"));
-                {
-                    PatternSelector panel = new PatternSelector("Through Hole");
-                    thruHoldPanel.add(panel, "cell 0 0,grow");
-                }
+                PatternEditor thruHolePanel = new PatternEditor(new ThruPanel());
+                tabbedPane.addTab("Thru Hole", null, thruHolePanel, null);
+                thruHolePanel.setLayout(new MigLayout("", "[150][grow]", "[125,grow]"));
             }
         }
         {
