@@ -15,7 +15,7 @@ public class ThruHolePattern extends Pattern {
     float     pinPitch;
     float     holeSize;
     float     padSize;
-    boolean   firstPadSqure;
+    boolean   firstPadSquare;
 
     public ThruHolePattern(String name) {
         this.name = name;
@@ -24,7 +24,7 @@ public class ThruHolePattern extends Pattern {
         arrayHeight = 8.0f;
         pinPitch = 2.54f;
         holeSize = 0.9f;
-        firstPadSqure = false;
+        firstPadSquare = false;
     }
 
     public ThruHolePattern(String name, PadCount padCount, List<Pad> pads, float arrayHeight, float pinPitch,
@@ -37,7 +37,7 @@ public class ThruHolePattern extends Pattern {
         this.pinPitch = pinPitch;
         this.holeSize = holeSize;
         this.padSize = padSize;
-        this.firstPadSqure = firstPadSqure;
+        this.firstPadSquare = firstPadSqure;
     }
 
     public String getName() {
@@ -96,12 +96,20 @@ public class ThruHolePattern extends Pattern {
         this.padSize = padSize;
     }
 
-    public boolean isFirstPadSqure() {
-        return firstPadSqure;
+    public boolean isFirstPadSquare() {
+        return firstPadSquare;
     }
 
-    public void setFirstPadSqure(boolean firstPadSqure) {
-        this.firstPadSqure = firstPadSqure;
+    public void setFirstPadSquare(boolean firstPadSqure) {
+        this.firstPadSquare = firstPadSqure;
+    }
+
+    @Override
+    public String toString() {
+        String ret = "Name: " + name + " ID: " + this.getID() + "\nPad Count -- " + padCount.toString()
+                + "\nArray Height: " + arrayHeight + "\nPin Pitch: " + pinPitch + "\nHole Size: " + holeSize
+                + "\nPad Size: " + padSize + "\nFirst Pad Square: " + firstPadSquare;
+        return ret;
     }
 
 }

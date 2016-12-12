@@ -9,6 +9,7 @@ import libedit.editor.models.patterns.Pattern;
 import libedit.editor.views.elements.PatternSelector;
 import net.miginfocom.swing.MigLayout;
 
+@SuppressWarnings("serial")
 public class PatternEditor extends JPanel {
 
     List<Pattern> patterns = new ArrayList<Pattern>();

@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 
 import libedit.editor.models.patterns.Pattern;
 
+@SuppressWarnings("serial")
 public abstract class AbstractPatternPanel extends JPanel {
 
     private String type;
@@ -15,6 +16,8 @@ public abstract class AbstractPatternPanel extends JPanel {
     public String getType() {
         return type;
     }
+
+    public abstract Pattern getPattern();
 
     public abstract Pattern getNewPattern(String name);
 

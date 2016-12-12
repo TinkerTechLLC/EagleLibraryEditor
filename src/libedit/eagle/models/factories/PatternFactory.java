@@ -45,6 +45,11 @@ public class PatternFactory {
                 return 0;
             }
         }
+
+        public String toString() {
+            String ret = "Down: " + down + " Right: " + right + " Up: " + up + " Left: " + left;
+            return ret;
+        }
     }
 
     static public class PadSize {
@@ -68,10 +73,8 @@ public class PatternFactory {
      * @param topLayer
      * @return
      */
-    static public List<EagleObj> createSMDPattern(
-            PadCount padCount, PadSize padShape,
-            float pitch, float oaWidth, float oaHeight,
-            boolean topLayer) {
+    static public List<EagleObj> createSMDPattern(PadCount padCount, PadSize padShape, float pitch, float oaWidth,
+            float oaHeight, boolean topLayer) {
         return createSMDPattern(padCount, padShape, pitch, oaWidth, oaHeight, topLayer, 1);
     }
 
@@ -94,10 +97,8 @@ public class PatternFactory {
      *            placed on bottom
      * @return List of SMD pads
      */
-    static public List<EagleObj> createSMDPattern(
-            PadCount padCount, PadSize padShape,
-            float pitch, float oaWidth, float oaHeight,
-            boolean topLayer, int startingPin) {
+    static public List<EagleObj> createSMDPattern(PadCount padCount, PadSize padShape, float pitch, float oaWidth,
+            float oaHeight, boolean topLayer, int startingPin) {
         List<EagleObj> pattern = new ArrayList<EagleObj>();
 
         int layer = topLayer ? Layers.TOP : Layers.BOTTOM;
@@ -145,20 +146,17 @@ public class PatternFactory {
             if (pin < pc.firstPadNum(Direction.RIGHT)) {
                 rot = Rotation.R0;
             }
-            else if (pin >= pc.firstPadNum(Direction.RIGHT) &&
-                    pin < pc.firstPadNum(Direction.UP)) {
+            else if (pin >= pc.firstPadNum(Direction.RIGHT) && pin < pc.firstPadNum(Direction.UP)) {
                 rot = Rotation.R90;
             }
-            else if (pin >= pc.firstPadNum(Direction.UP) &&
-                    pin < pc.firstPadNum(Direction.LEFT)) {
+            else if (pin >= pc.firstPadNum(Direction.UP) && pin < pc.firstPadNum(Direction.LEFT)) {
                 rot = Rotation.R0;
             }
             else {
                 rot = Rotation.R90;
             }
 
-            SMD smd = new SMD(Integer.toString(pin),
-                    params.get(i * PARAM_COUNT), params.get(i * PARAM_COUNT + 1),
+            SMD smd = new SMD(Integer.toString(pin), params.get(i * PARAM_COUNT), params.get(i * PARAM_COUNT + 1),
                     padShape.width, padShape.height, layer, rot);
             pattern.add(smd);
         }

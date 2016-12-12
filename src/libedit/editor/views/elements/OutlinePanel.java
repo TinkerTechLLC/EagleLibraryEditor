@@ -3,6 +3,7 @@ package libedit.editor.views.elements;
 import libedit.editor.models.patterns.Pattern;
 import libedit.editor.views.abstracts.AbstractPatternPanel;
 
+@SuppressWarnings("serial")
 public class OutlinePanel extends AbstractPatternPanel {
 
     public OutlinePanel() {
@@ -18,6 +19,12 @@ public class OutlinePanel extends AbstractPatternPanel {
 
     @Override
     public Pattern getNewPattern(String name) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Pattern getPattern() {
         // TODO Auto-generated method stub
         return null;
     }

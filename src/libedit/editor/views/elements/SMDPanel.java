@@ -21,4 +21,10 @@ public class SMDPanel extends AbstractPatternPanel {
         // TODO Auto-generated method stub
         return null;
     }
+
+    @Override
+    public Pattern getPattern() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }
