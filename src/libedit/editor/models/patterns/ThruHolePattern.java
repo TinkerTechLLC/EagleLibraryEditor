@@ -15,7 +15,6 @@ public class ThruHolePattern extends Pattern {
     float     holeSize;
     float     padSize;
     boolean   firstPadSquare;
-    boolean   topLayer;
 
     public ThruHolePattern(String name) {
         super(name, PatternType.THRU);
@@ -98,19 +97,11 @@ public class ThruHolePattern extends Pattern {
         this.firstPadSquare = firstPadSqure;
     }
 
-    public boolean isTopLayer() {
-        return topLayer;
-    }
-
-    public void setTopLayer(boolean topLayer) {
-        this.topLayer = topLayer;
-    }
-
     @Override
     public String toString() {
         String ret = "Name: " + name + " ID: " + this.getID() + "\nPad Count -- " + padCount.toString()
                 + "\nArray Height: " + arrayHeight + "\nPin Pitch: " + pinPitch + "\nHole Size: " + holeSize
-                + "\nPad Size: " + padSize + "\nFirst Pad Square: " + firstPadSquare + "\nTop layer: " + topLayer;
+                + "\nPad Size: " + padSize + "\nFirst Pad Square: " + firstPadSquare;
         return ret;
     }
 

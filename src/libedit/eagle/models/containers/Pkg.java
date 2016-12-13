@@ -7,6 +7,7 @@ import org.jdom2.Element;
 
 import libedit.eagle.models.abstractobjects.EagleContainer;
 import libedit.eagle.models.abstractobjects.EagleObj;
+import libedit.eagle.models.objects.Pad;
 import libedit.eagle.models.objects.SMD;
 import libedit.eagle.models.objects.Wire;
 
@@ -56,6 +57,16 @@ public class Pkg extends EagleContainer {
     protected void printAttributes(int tabLevel) {
         this.printTabs(tabLevel);
         System.out.println("name=" + name);
+    }
+
+    public List<Pad> getThruPads() {
+        List<Pad> ret = new ArrayList<Pad>();
+        for (EagleObj o : this.children) {
+            if (o.isThruPad()) {
+                ret.add((Pad) o);
+            }
+        }
+        return ret;
     }
 
     public List<SMD> getSMDPads() {

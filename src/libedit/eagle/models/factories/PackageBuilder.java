@@ -7,6 +7,7 @@ import libedit.eagle.models.abstractobjects.EagleObj;
 import libedit.eagle.models.containers.Pkg;
 import libedit.editor.models.patterns.Pattern;
 import libedit.editor.models.patterns.SMDPattern;
+import libedit.editor.models.patterns.ThruHolePattern;
 import libedit.editor.views.PackagePreviewer;
 import libedit.editor.views.abstracts.PatternEditor;
 
@@ -31,6 +32,9 @@ public class PackageBuilder {
                     startingPin += smdPattern.getPadCount().totalPads();
                     break;
                 case THRU:
+                    ThruHolePattern thruPattern = (ThruHolePattern) p;
+                    pkgChildren.addAll(PatternFactory.thruPadListFromPattern(thruPattern, startingPin));
+                    startingPin += thruPattern.getPadCount().totalPads();
                     break;
                 default:
                     break;

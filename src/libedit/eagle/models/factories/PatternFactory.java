@@ -6,10 +6,13 @@ import java.util.List;
 
 import libedit.eagle.models.abstractobjects.EagleObj;
 import libedit.eagle.models.enums.Layers;
+import libedit.eagle.models.enums.PadShape;
 import libedit.eagle.models.enums.Rot.Rotation;
+import libedit.eagle.models.objects.Pad;
 import libedit.eagle.models.objects.SMD;
 import libedit.eagle.models.objects.Wire;
 import libedit.editor.models.patterns.SMDPattern;
+import libedit.editor.models.patterns.ThruHolePattern;
 
 public class PatternFactory {
 
@@ -67,6 +70,49 @@ public class PatternFactory {
             return ret;
         }
 
+    }
+
+    static public List<Pad> thruPadListFromPattern(ThruHolePattern pattern, int startingPin) {
+        List<Pad> thruList = new ArrayList<Pad>();
+
+        float x, y;
+        PadCount pc = pattern.getPadCount();
+        List<Float> params = new ArrayList<Float>();
+        final int PARAM_COUNT = 2;
+        float oaHeight = pattern.getArrayHeight();
+        float pitch = pattern.getPinPitch();
+
+        // Down pads
+        for (int i = 0; i < pc.down; i++) {
+            x = -(((float) pc.down - 1) / 2 * pitch) + i * pitch;
+            y = -(oaHeight) / 2;
+            params.add(x);
+            params.add(y);
+        }
+
+        // Up pads
+        for (int i = 0; i < pc.up; i++) {
+            x = (((float) pc.up - 1) / 2 * pitch) - i * pitch;
+            y = (oaHeight) / 2;
+            params.add(x);
+            params.add(y);
+        }
+
+        for (int i = 0; i < pc.totalPads(); i++) {
+            int pin = i + startingPin;
+            PadShape ps;
+            if (i == 0) {
+                ps = pattern.isFirstPadSquare() ? PadShape.SQUARE : PadShape.ROUND;
+            }
+            else {
+                ps = PadShape.ROUND;
+            }
+            Pad thruPad = new Pad(Integer.toString(pin), params.get(i * PARAM_COUNT),
+                    params.get(i * PARAM_COUNT + 1), pattern.getHoleSize(),
+                    pattern.getPadSize(), ps, false);
+            thruList.add(thruPad);
+        }
+        return thruList;
     }
 
     /**

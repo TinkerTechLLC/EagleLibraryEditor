@@ -13,7 +13,9 @@ import javax.swing.JPanel;
 
 import libedit.eagle.models.containers.Pkg;
 import libedit.eagle.models.enums.Layers;
+import libedit.eagle.models.enums.PadShape;
 import libedit.eagle.models.enums.Rot.Rotation;
+import libedit.eagle.models.objects.Pad;
 import libedit.eagle.models.objects.SMD;
 import libedit.eagle.models.objects.Wire;
 
@@ -74,11 +76,13 @@ public class PackagePreviewer extends JPanel {
             for (SMD smd : pkg.getSMDPads()) {
                 paintSMDPad(smd, g2d);
             }
+            for (Pad pad : pkg.getThruPads()) {
+                paintThruPad(pad, g2d);
+            }
             for (Wire wire : pkg.getWires()) {
                 paintWire(wire, g2d);
             }
         }
-
         paintGrid(g2d);
         paintCenterMark(g2d);
     }
@@ -135,6 +139,29 @@ public class PackagePreviewer extends JPanel {
         }
         Point location = this.unitPointToPxPoint(x, y);
         g2d.fillRect(location.x, location.y, unitToPx(w), unitToPx(h));
+    }
+
+    private void paintThruPad(Pad pad, Graphics2D g2d) {
+        float x, y;
+        float holeDia = pad.getDrill();
+        float padDia = pad.getDiameter();
+        x = pad.getX() - padDia / 2;
+        y = pad.getY() + padDia / 2;
+        g2d.setColor(Color.GREEN);
+        Point location = this.unitPointToPxPoint(x, y);
+        if (pad.getShape() == PadShape.ROUND) {
+            g2d.fillOval(location.x, location.y, unitToPx(padDia), unitToPx(padDia));
+        }
+        else {
+            g2d.fillRect(location.x, location.y, unitToPx(padDia), unitToPx(padDia));
+        }
+
+        x = pad.getX() - holeDia / 2;
+        y = pad.getY() + holeDia / 2;
+        location = this.unitPointToPxPoint(x, y);
+        g2d.setColor(this.getBackground());
+        g2d.fillOval(location.x, location.y, unitToPx(holeDia), unitToPx(holeDia));
+
     }
 
     private void paintGrid(Graphics2D g2d) {

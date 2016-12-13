@@ -59,6 +59,10 @@ public abstract class EagleObj implements Comparable<EagleObj> {
 
     protected abstract void setPriority();
 
+    public boolean isThruPad() {
+        return this.getPriority() == Priority.PAD;
+    }
+
     public boolean isWire() {
         return this.getPriority() == Priority.WIRE;
     }

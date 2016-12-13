@@ -182,6 +182,11 @@ public class ThruForm extends AbstractPatternForm {
         btnPanel.add(lblFirstPinSquare, "cell 0 0 2 1,alignx center");
 
         rdbtnTrue = new JRadioButton("True");
+        rdbtnTrue.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                updatePattern();
+            }
+        });
         rdbtnTrue.addPropertyChangeListener(new PropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent evt) {
                 updatePattern();
@@ -191,6 +196,11 @@ public class ThruForm extends AbstractPatternForm {
         buttonGroup.add(rdbtnTrue);
 
         rdbtnFalse = new JRadioButton("False");
+        rdbtnFalse.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                updatePattern();
+            }
+        });
         btnPanel.add(rdbtnFalse, "cell 1 1,alignx left,aligny top");
         buttonGroup.add(rdbtnFalse);
         rdbtnFalse.setSelected(true);
