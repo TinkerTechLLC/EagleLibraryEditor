@@ -86,6 +86,7 @@ public class ThruPanel extends AbstractPatternPanel {
         txtTopCount = new IntegerField(0, 1000);
         txtTopCount.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                System.out.println("UPPads: " + txtTopCount.getVal());
                 updatePattern();
             }
         });
@@ -230,11 +231,12 @@ public class ThruPanel extends AbstractPatternPanel {
     }
 
     private void updatePattern() {
-        System.out.println(thisPattern.toString() + "\n");
         thisPattern.setArrayHeight(this.txtArrayHeight.getVal());
         thisPattern.setFirstPadSquare(isFirstPinSquare());
         thisPattern.setHoleSize(this.txtHoleSize.getVal());
-        PadCount padCount = new PadCount(this.txtBottomCount.getVal(), 0, this.txtTopCount.getVal(), 0);
+        int upPads = this.txtTopCount.getVal();
+        System.out.println("UP PADS: " + upPads);
+        PadCount padCount = new PadCount(this.txtBottomCount.getVal(), 0, upPads, 0);
         thisPattern.setPadCount(padCount);
         thisPattern.setPadSize(this.txtPadSize.getVal());
         System.out.println("Saving pattern\n" + thisPattern.toString() + "\n");

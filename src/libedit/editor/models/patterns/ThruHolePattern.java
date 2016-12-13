@@ -54,6 +54,7 @@ public class ThruHolePattern extends Pattern {
 
     public void setPadCount(PadCount padCount) {
         this.padCount = padCount;
+        System.out.println("New pad count -- " + this.padCount);
     }
 
     public List<Pad> getPads() {

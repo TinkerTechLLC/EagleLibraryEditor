@@ -21,6 +21,7 @@ public class PatternFactory {
         public int down, right, up, left;
 
         public PadCount(int down, int right, int up, int left) {
+            System.out.println("New up val: " + up);
             this.down = down;
             this.right = right;
             this.up = up;

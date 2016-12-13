@@ -71,7 +71,6 @@ public class MainDialog extends JDialog {
     private final ButtonGroup layerButtons          = new ButtonGroup();
     private JRadioButton      rdbtnTop;
     private FloatField        gridSize;
-    // private JComboBox<String> comboBox;
 
     /**
      * Launch the application.

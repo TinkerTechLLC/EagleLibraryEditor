@@ -50,6 +50,10 @@ public class PatternSelector extends JPanel {
             public void valueChanged(ListSelectionEvent e) {
                 System.out.println("Selection changed: " + list.getSelectedIndex());
                 lastSelected = list.getSelectedIndex();
+                if (lastSelected == -1) {
+                    lastSelected = 0;
+                    list.setSelectedIndex(lastSelected);
+                }
                 selectPattern(list.getSelectedIndex());
 
             }
@@ -91,6 +95,7 @@ public class PatternSelector extends JPanel {
     }
 
     private void selectPattern(int patternNum) {
+        System.out.println("Selecting pattern " + patternNum);
         patternPanel.loadPattern(patterns.get(patternNum));
     }
 
@@ -110,6 +115,7 @@ public class PatternSelector extends JPanel {
     }
 
     private void deletePattern() {
+        System.out.println("Deleting pattern " + list.getSelectedIndex());
         if (list.getSelectedIndex() != -1) {
             int index = list.getSelectedIndex();
             listModel.remove(index);
