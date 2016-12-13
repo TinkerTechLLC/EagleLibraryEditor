@@ -23,4 +23,6 @@ public abstract class AbstractPatternPanel extends JPanel {
 
     public abstract void loadPattern(Pattern pattern);
 
+    protected abstract void updatePattern();
+
 }

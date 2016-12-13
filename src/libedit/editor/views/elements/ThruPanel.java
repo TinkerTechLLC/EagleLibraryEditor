@@ -23,10 +23,9 @@ import net.miginfocom.swing.MigLayout;
 @SuppressWarnings("serial")
 public class ThruPanel extends AbstractPatternPanel {
 
-    private PatternSelector   selector;
-
     private ThruHolePattern   thisPattern;
-    private IntegerField      txtTopCount;
+
+    private IntegerField      txtUpCount;
     private IntegerField      txtBottomCount;
     private FloatField        txtArrayHeight;
     private FloatField        txtPitch;
@@ -62,7 +61,6 @@ public class ThruPanel extends AbstractPatternPanel {
 
         super("Through Hole");
 
-        selector = null;
         thisPattern = new ThruHolePattern("Default");
 
         setLayout(new MigLayout("", "[grow,center]", "[][][][][][grow]"));
@@ -77,23 +75,23 @@ public class ThruPanel extends AbstractPatternPanel {
         separator_2 = new JSeparator();
         padCountPanel.add(separator_2, "cell 0 1 2 1,growx");
 
-        JLabel lblPadCountTop = new JLabel("Top");
-        padCountPanel.add(lblPadCountTop, "cell 0 2,alignx center");
+        JLabel lblPadCountUp = new JLabel("Top");
+        padCountPanel.add(lblPadCountUp, "cell 0 2,alignx center");
 
         lblPadCountBottom = new JLabel("Bottom");
         padCountPanel.add(lblPadCountBottom, "cell 1 2,alignx center");
 
-        txtTopCount = new IntegerField(0, 1000);
-        txtTopCount.addActionListener(new ActionListener() {
+        txtUpCount = new IntegerField(0, 1000);
+        txtUpCount.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                System.out.println("UPPads: " + txtTopCount.getVal());
+                System.out.println("UPPads: " + txtUpCount.getVal());
                 updatePattern();
             }
         });
-        txtTopCount.setHorizontalAlignment(SwingConstants.CENTER);
-        txtTopCount.setText("0");
-        padCountPanel.add(txtTopCount, "cell 0 3");
-        txtTopCount.setColumns(10);
+        txtUpCount.setHorizontalAlignment(SwingConstants.CENTER);
+        txtUpCount.setText("0");
+        padCountPanel.add(txtUpCount, "cell 0 3");
+        txtUpCount.setColumns(10);
 
         txtBottomCount = new IntegerField(0, 1000);
         txtBottomCount.addActionListener(new ActionListener() {
@@ -211,13 +209,13 @@ public class ThruPanel extends AbstractPatternPanel {
     public void loadPattern(Pattern pattern) {
         thisPattern = (ThruHolePattern) pattern;
         PadCount pc = thisPattern.getPadCount();
-        txtTopCount.setVal(pc.up);
+        txtUpCount.setVal(pc.up);
         txtBottomCount.setVal(pc.down);
         txtArrayHeight.setVal(thisPattern.getArrayHeight());
         txtPitch.setVal(thisPattern.getPinPitch());
         txtHoleSize.setVal(thisPattern.getHoleSize());
         txtPadSize.setVal(thisPattern.getPadSize());
-        System.out.println("Loading pattern\n" + thisPattern.toString() + "\n");
+        setFirstPinSquare(thisPattern.isFirstPadSquare());
     }
 
     @Override
@@ -230,20 +228,16 @@ public class ThruPanel extends AbstractPatternPanel {
         return thisPattern;
     }
 
-    private void updatePattern() {
+    @Override
+    protected void updatePattern() {
         thisPattern.setArrayHeight(this.txtArrayHeight.getVal());
         thisPattern.setFirstPadSquare(isFirstPinSquare());
         thisPattern.setHoleSize(this.txtHoleSize.getVal());
-        int upPads = this.txtTopCount.getVal();
-        System.out.println("UP PADS: " + upPads);
-        PadCount padCount = new PadCount(this.txtBottomCount.getVal(), 0, upPads, 0);
+        PadCount padCount = new PadCount(this.txtBottomCount.getVal(), 0, this.txtUpCount.getVal(), 0);
         thisPattern.setPadCount(padCount);
         thisPattern.setPadSize(this.txtPadSize.getVal());
-        System.out.println("Saving pattern\n" + thisPattern.toString() + "\n");
-
-        // if (selector != null) {
-        // selector.updatePattern(this.getPattern());
-        // }
+        thisPattern.setPinPitch(this.txtPitch.getVal());
+        thisPattern.setFirstPadSquare(isFirstPinSquare());
     }
 
 }

@@ -29,4 +29,10 @@ public class OutlinePanel extends AbstractPatternPanel {
         return null;
     }
 
+    @Override
+    protected void updatePattern() {
+        // TODO Auto-generated method stub
+
+    }
+
 }

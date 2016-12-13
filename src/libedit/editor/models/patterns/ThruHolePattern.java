@@ -8,7 +8,6 @@ import libedit.eagle.models.objects.Pad;
 
 public class ThruHolePattern extends Pattern {
 
-    String    name;
     PadCount  padCount;
     List<Pad> pads;
     float     arrayHeight;
@@ -16,9 +15,10 @@ public class ThruHolePattern extends Pattern {
     float     holeSize;
     float     padSize;
     boolean   firstPadSquare;
+    boolean   topLayer;
 
     public ThruHolePattern(String name) {
-        this.name = name;
+        super(name);
         pads = new ArrayList<Pad>();
         padCount = new PadCount(0, 0, 0, 0);
         arrayHeight = 8.0f;
@@ -29,7 +29,7 @@ public class ThruHolePattern extends Pattern {
 
     public ThruHolePattern(String name, PadCount padCount, List<Pad> pads, float arrayHeight, float pinPitch,
             float holeSize, float padSize, boolean firstPadSqure) {
-        super();
+        super(name);
         this.name = name;
         this.padCount = padCount;
         this.pads = pads;
@@ -38,14 +38,6 @@ public class ThruHolePattern extends Pattern {
         this.holeSize = holeSize;
         this.padSize = padSize;
         this.firstPadSquare = firstPadSqure;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public PadCount getPadCount() {
@@ -105,11 +97,19 @@ public class ThruHolePattern extends Pattern {
         this.firstPadSquare = firstPadSqure;
     }
 
+    public boolean isTopLayer() {
+        return topLayer;
+    }
+
+    public void setTopLayer(boolean topLayer) {
+        this.topLayer = topLayer;
+    }
+
     @Override
     public String toString() {
         String ret = "Name: " + name + " ID: " + this.getID() + "\nPad Count -- " + padCount.toString()
                 + "\nArray Height: " + arrayHeight + "\nPin Pitch: " + pinPitch + "\nHole Size: " + holeSize
-                + "\nPad Size: " + padSize + "\nFirst Pad Square: " + firstPadSquare;
+                + "\nPad Size: " + padSize + "\nFirst Pad Square: " + firstPadSquare + "\nTop layer: " + topLayer;
         return ret;
     }
 

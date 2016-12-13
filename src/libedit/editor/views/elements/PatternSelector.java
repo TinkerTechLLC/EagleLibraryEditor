@@ -48,14 +48,7 @@ public class PatternSelector extends JPanel {
         list = new JList<String>(listModel);
         list.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
-                System.out.println("Selection changed: " + list.getSelectedIndex());
-                lastSelected = list.getSelectedIndex();
-                if (lastSelected == -1) {
-                    lastSelected = 0;
-                    list.setSelectedIndex(lastSelected);
-                }
                 selectPattern(list.getSelectedIndex());
-
             }
         });
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -76,6 +69,11 @@ public class PatternSelector extends JPanel {
         txtPatternName.setColumns(10);
 
         JButton btnRenamePattern = new JButton("Rename Pattern");
+        btnRenamePattern.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                renamePattern();
+            }
+        });
         add(btnRenamePattern, "cell 0 3,growx");
         add(btnAddPattern, "cell 0 4,growx");
 
@@ -95,8 +93,13 @@ public class PatternSelector extends JPanel {
     }
 
     private void selectPattern(int patternNum) {
-        System.out.println("Selecting pattern " + patternNum);
-        patternPanel.loadPattern(patterns.get(patternNum));
+        lastSelected = patternNum;
+        if (lastSelected == -1) {
+            lastSelected = 0;
+            list.setSelectedIndex(lastSelected);
+        }
+        patternPanel.loadPattern(patterns.get(lastSelected));
+        System.out.println("Selecting pattern: " + lastSelected);
     }
 
     private void addPattern() {
@@ -114,8 +117,19 @@ public class PatternSelector extends JPanel {
         list.setSelectedIndex(lastSelected);
     }
 
+    private void renamePattern() {
+        int index = list.getSelectedIndex();
+        String name = this.txtPatternName.getText();
+        if (index != -1) {
+            Pattern p = patterns.get(list.getSelectedIndex());
+            p.setName(name);
+            listModel.remove(index);
+            listModel.add(index, name);
+            list.setSelectedIndex(index);
+        }
+    }
+
     private void deletePattern() {
-        System.out.println("Deleting pattern " + list.getSelectedIndex());
         if (list.getSelectedIndex() != -1) {
             int index = list.getSelectedIndex();
             listModel.remove(index);

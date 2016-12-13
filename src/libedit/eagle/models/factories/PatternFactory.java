@@ -61,6 +61,11 @@ public class PatternFactory {
             this.height = height;
         }
 
+        public String toString() {
+            String ret = "Width: " + width + " Height: " + width;
+            return ret;
+        }
+
     }
 
     /**
