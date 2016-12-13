@@ -18,9 +18,10 @@ public class SMDPattern extends Pattern {
     boolean   topLayer;
 
     public SMDPattern(String name) {
-        super(name);
+        super(name, PatternType.SMD);
         pads = new ArrayList<Pad>();
         padCount = new PadCount(0, 0, 0, 0);
+        padSize = new PadSize(1.0f, 2.0f);
         arrayHeight = 8.0f;
         arrayWidth = 8.0f;
         pinPitch = 2.0f;
@@ -32,7 +33,7 @@ public class SMDPattern extends Pattern {
             float arrayHeight,
             float arrayWidth,
             float pinPitch, boolean isTopLayer) {
-        super(name);
+        super(name, PatternType.SMD);
         this.padCount = padCount;
         this.padSize = padSize;
         this.pads = pads;

@@ -18,18 +18,19 @@ public class ThruHolePattern extends Pattern {
     boolean   topLayer;
 
     public ThruHolePattern(String name) {
-        super(name);
+        super(name, PatternType.THRU);
         pads = new ArrayList<Pad>();
         padCount = new PadCount(0, 0, 0, 0);
         arrayHeight = 8.0f;
         pinPitch = 2.54f;
+        padSize = 2.0f;
         holeSize = 0.9f;
         firstPadSquare = false;
     }
 
     public ThruHolePattern(String name, PadCount padCount, List<Pad> pads, float arrayHeight, float pinPitch,
             float holeSize, float padSize, boolean firstPadSqure) {
-        super(name);
+        super(name, PatternType.THRU);
         this.name = name;
         this.padCount = padCount;
         this.pads = pads;

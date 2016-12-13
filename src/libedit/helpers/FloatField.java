@@ -110,6 +110,10 @@ public class FloatField extends AbstractNumField<Float> {
 
     @Override
     public Float getVal() {
-        return Float.parseFloat(this.getText());
+        try {
+            return Float.parseFloat(this.getText());
+        } catch (NumberFormatException e) {
+            return 0f;
+        }
     }
 }

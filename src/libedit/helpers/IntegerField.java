@@ -51,6 +51,10 @@ public class IntegerField extends AbstractNumField<Integer> {
 
     @Override
     public Integer getVal() {
-        return Integer.parseInt(this.getText());
+        try {
+            return Integer.parseInt(this.getText());
+        } catch (NumberFormatException e) {
+            return 0;
+        }
     }
 }

@@ -1,5 +1,10 @@
 package libedit.editor.views.elements;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -10,13 +15,14 @@ import libedit.eagle.models.factories.PatternFactory.PadCount;
 import libedit.eagle.models.factories.PatternFactory.PadSize;
 import libedit.editor.models.patterns.Pattern;
 import libedit.editor.models.patterns.SMDPattern;
-import libedit.editor.views.abstracts.AbstractPatternPanel;
+import libedit.editor.views.abstracts.AbstractPatternForm;
 import libedit.helpers.FloatField;
 import libedit.helpers.IntegerField;
 import net.miginfocom.swing.MigLayout;
 
 @SuppressWarnings("serial")
-public class SMDPanel extends AbstractPatternPanel {
+public class SMDForm extends AbstractPatternForm {
+
     private SMDPattern        thisPattern;
 
     private IntegerField      txtRightCount;
@@ -33,11 +39,13 @@ public class SMDPanel extends AbstractPatternPanel {
     private JRadioButton      rdbtnBottom;
     private final ButtonGroup buttonGroup = new ButtonGroup();
 
-    public SMDPanel() {
+    public SMDForm() {
 
         super("SMD");
 
-        setLayout(new MigLayout("", "[grow]", "[grow][][grow][][grow][][grow]"));
+        thisPattern = new SMDPattern("Default");
+
+        setLayout(new MigLayout("", "[]", "[][][][][][][][grow]"));
 
         JPanel panel = new JPanel();
         add(panel, "cell 0 0,grow");
@@ -47,18 +55,38 @@ public class SMDPanel extends AbstractPatternPanel {
         panel.add(lblSmdPadCount, "cell 1 1 3 1,alignx center");
 
         txtUpCount = new IntegerField(0, 1000);
+        txtUpCount.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                updatePattern();
+            }
+        });
         panel.add(txtUpCount, "cell 2 2,growx");
         txtUpCount.setColumns(10);
 
         txtLeftCount = new IntegerField(0, 1000);
+        txtLeftCount.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                updatePattern();
+            }
+        });
         panel.add(txtLeftCount, "cell 1 3,growx");
         txtLeftCount.setColumns(10);
 
         txtRightCount = new IntegerField(0, 1000);
+        txtRightCount.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                updatePattern();
+            }
+        });
         panel.add(txtRightCount, "cell 3 3,growx");
         txtRightCount.setColumns(10);
 
         txtBottomCount = new IntegerField(0, 1000);
+        txtBottomCount.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                updatePattern();
+            }
+        });
         panel.add(txtBottomCount, "cell 2 4,growx");
         txtBottomCount.setColumns(10);
 
@@ -78,11 +106,21 @@ public class SMDPanel extends AbstractPatternPanel {
         JLabel lblWidth = new JLabel("Width");
         panel_1.add(lblWidth, "cell 3 2,alignx center");
 
-        txtPadHeight = new FloatField(0, Float.MAX_VALUE, 2);
+        txtPadHeight = new FloatField(2, 0, Float.MAX_VALUE);
+        txtPadHeight.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                updatePattern();
+            }
+        });
         panel_1.add(txtPadHeight, "cell 1 3,growx");
         txtPadHeight.setColumns(10);
 
-        txtPadWidth = new FloatField(0, Float.MAX_VALUE, 2);
+        txtPadWidth = new FloatField(2, 0, Float.MAX_VALUE);
+        txtPadWidth.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                updatePattern();
+            }
+        });
         panel_1.add(txtPadWidth, "cell 3 3,growx");
         txtPadWidth.setColumns(10);
 
@@ -105,15 +143,30 @@ public class SMDPanel extends AbstractPatternPanel {
         JLabel lblPitch = new JLabel("Pitch");
         panel_2.add(lblPitch, "cell 3 2,alignx center");
 
-        txtArrayHeight = new FloatField(0, Float.MAX_VALUE, 2);
+        txtArrayHeight = new FloatField(2, 0, Float.MAX_VALUE);
+        txtArrayHeight.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                updatePattern();
+            }
+        });
         panel_2.add(txtArrayHeight, "cell 1 3");
         txtArrayHeight.setColumns(10);
 
-        txtArrayWidth = new FloatField(0, Float.MAX_VALUE, 2);
+        txtArrayWidth = new FloatField(2, 0, Float.MAX_VALUE);
+        txtArrayWidth.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                updatePattern();
+            }
+        });
         panel_2.add(txtArrayWidth, "cell 2 3,growx");
         txtArrayWidth.setColumns(10);
 
-        txtPitch = new FloatField(0, Float.MAX_VALUE, 2);
+        txtPitch = new FloatField(2, 0, Float.MAX_VALUE);
+        txtPitch.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                updatePattern();
+            }
+        });
         panel_2.add(txtPitch, "cell 3 3,growx");
         txtPitch.setColumns(10);
 
@@ -128,8 +181,13 @@ public class SMDPanel extends AbstractPatternPanel {
         panel_3.add(lblLayer, "cell 1 1 2 1,alignx center");
 
         rdbtnTop = new JRadioButton("Top");
-        buttonGroup.add(rdbtnTop);
         rdbtnTop.setSelected(true);
+        rdbtnTop.addPropertyChangeListener(new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent arg0) {
+                updatePattern();
+            }
+        });
+        buttonGroup.add(rdbtnTop);
         panel_3.add(rdbtnTop, "cell 1 2");
 
         rdbtnBottom = new JRadioButton("Bottom");
@@ -165,6 +223,7 @@ public class SMDPanel extends AbstractPatternPanel {
         this.txtPadWidth.setVal(ps.width);
         this.txtPitch.setVal(p.getPinPitch());
         this.setTopLayer(p.isTopLayer());
+        thisPattern = p;
     }
 
     @Override
@@ -188,5 +247,6 @@ public class SMDPanel extends AbstractPatternPanel {
         thisPattern.setPadSize(padSize);
         thisPattern.setPinPitch(this.txtPitch.getVal());
         thisPattern.setTopLayer(this.isTopLayer());
+        updateObservers();
     }
 }

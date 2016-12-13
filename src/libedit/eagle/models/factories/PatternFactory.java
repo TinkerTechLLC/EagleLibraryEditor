@@ -9,6 +9,7 @@ import libedit.eagle.models.enums.Layers;
 import libedit.eagle.models.enums.Rot.Rotation;
 import libedit.eagle.models.objects.SMD;
 import libedit.eagle.models.objects.Wire;
+import libedit.editor.models.patterns.SMDPattern;
 
 public class PatternFactory {
 
@@ -69,61 +70,39 @@ public class PatternFactory {
     }
 
     /**
-     * Convenience method for creating an SMD pattern with starting pin at 1.
+     * Creates a list of SMD pads centered around (0,0) point, based upon the
+     * provided pattern
      * 
-     * @param padCount
-     * @param padShape
-     * @param pitch
-     * @param oaWidth
-     * @param oaHeight
-     * @param topLayer
+     * @param pattern
+     *            SMDPattern object
+     * @param startingPin
+     *            Number of first pin
      * @return
      */
-    static public List<EagleObj> createSMDPattern(PadCount padCount, PadSize padShape, float pitch, float oaWidth,
-            float oaHeight, boolean topLayer) {
-        return createSMDPattern(padCount, padShape, pitch, oaWidth, oaHeight, topLayer, 1);
-    }
+    static public List<SMD> smdListFromPattern(SMDPattern pattern, int startingPin) {
+        List<SMD> smdList = new ArrayList<SMD>();
 
-    /**
-     * Creates a list of SMD pads centered around (0,0) point, based upon
-     * pattern input parameters
-     * 
-     * @param padCount
-     *            PadCount object
-     * @param padShape
-     *            PadShape object
-     * @param pitch
-     *            Distance from center to center of pads
-     * @param height
-     *            Distance between outside edges of top and bottom pads
-     * @param width
-     *            Distance between outside edges of left and right pads
-     * @param topLayer
-     *            If true, SMD pads are placed on top layer, otherwise they are
-     *            placed on bottom
-     * @return List of SMD pads
-     */
-    static public List<EagleObj> createSMDPattern(PadCount padCount, PadSize padShape, float pitch, float oaWidth,
-            float oaHeight, boolean topLayer, int startingPin) {
-        List<EagleObj> pattern = new ArrayList<EagleObj>();
-
-        int layer = topLayer ? Layers.TOP : Layers.BOTTOM;
+        int layer = pattern.isTopLayer() ? Layers.TOP : Layers.BOTTOM;
         float x, y;
-        PadCount pc = padCount;
+        PadCount pc = pattern.getPadCount();
         List<Float> params = new ArrayList<Float>();
         final int PARAM_COUNT = 2;
+        float oaHeight = pattern.getArrayHeight();
+        float oaWidth = pattern.getArrayWidth();
+        float pitch = pattern.getPinPitch();
+        PadSize padSize = pattern.getPadSize();
 
         // Down pads
         for (int i = 0; i < pc.down; i++) {
             x = -(((float) pc.down - 1) / 2 * pitch) + i * pitch;
-            y = -(oaHeight - padShape.height) / 2;
+            y = -(oaHeight - padSize.height) / 2;
             params.add(x);
             params.add(y);
         }
 
         // Right pads
         for (int i = 0; i < pc.right; i++) {
-            x = (oaWidth - padShape.height) / 2;
+            x = (oaWidth - padSize.height) / 2;
             y = -(((float) pc.right - 1) / 2 * pitch) + i * pitch;
             params.add(x);
             params.add(y);
@@ -132,14 +111,14 @@ public class PatternFactory {
         // Up pads
         for (int i = 0; i < pc.up; i++) {
             x = (((float) pc.up - 1) / 2 * pitch) - i * pitch;
-            y = (oaHeight - padShape.height) / 2;
+            y = (oaHeight - padSize.height) / 2;
             params.add(x);
             params.add(y);
         }
 
         // Left pads
         for (int i = 0; i < pc.left; i++) {
-            x = -(oaWidth - padShape.height) / 2;
+            x = -(oaWidth - padSize.height) / 2;
             y = (((float) pc.left - 1) / 2 * pitch) - i * pitch;
             params.add(x);
             params.add(y);
@@ -163,11 +142,11 @@ public class PatternFactory {
             }
 
             SMD smd = new SMD(Integer.toString(pin), params.get(i * PARAM_COUNT), params.get(i * PARAM_COUNT + 1),
-                    padShape.width, padShape.height, layer, rot);
-            pattern.add(smd);
+                    padSize.width, padSize.height, layer, rot);
+            smdList.add(smd);
         }
 
-        return pattern;
+        return smdList;
     }
 
     static public List<EagleObj> createSilkOutline(float width, float height, boolean topLayer) {

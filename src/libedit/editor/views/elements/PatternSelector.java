@@ -19,23 +19,25 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import libedit.editor.models.patterns.Pattern;
-import libedit.editor.views.abstracts.AbstractPatternPanel;
+import libedit.editor.views.abstracts.AbstractPatternForm;
+import libedit.editor.views.abstracts.PatternEditor;
 import net.miginfocom.swing.MigLayout;
 
 @SuppressWarnings("serial")
 public class PatternSelector extends JPanel {
 
-    public List<Pattern>             patterns  = new ArrayList<Pattern>();
+    private List<PatternEditor>      observers = new ArrayList<PatternEditor>();
+    private List<Pattern>            patterns  = new ArrayList<Pattern>();
     private DefaultListModel<String> listModel = new DefaultListModel<String>();
     private JList<String>            list;
-    private AbstractPatternPanel     patternPanel;
+    private AbstractPatternForm      patternPanel;
     private JTextField               txtPatternName;
     private int                      lastSelected;
 
     /**
      * Create the panel.
      */
-    public PatternSelector(AbstractPatternPanel patternPanel) {
+    public PatternSelector(AbstractPatternForm patternPanel) {
         lastSelected = 0;
 
         this.patternPanel = patternPanel;
@@ -87,11 +89,6 @@ public class PatternSelector extends JPanel {
 
     }
 
-    public void updatePattern(Pattern pattern) {
-        patterns.remove(lastSelected);
-        patterns.add(lastSelected, pattern);
-    }
-
     private void selectPattern(int patternNum) {
         lastSelected = patternNum;
         if (lastSelected == -1) {
@@ -99,13 +96,16 @@ public class PatternSelector extends JPanel {
             list.setSelectedIndex(lastSelected);
         }
         patternPanel.loadPattern(patterns.get(lastSelected));
-        System.out.println("Selecting pattern: " + lastSelected);
     }
 
     private void addPattern() {
+        String name = txtPatternName.getText();
+        addPattern(name);
+    }
+
+    public void addPattern(String name) {
 
         // Create a new pattern
-        String name = txtPatternName.getText();
         listModel.addElement(name);
         Pattern pattern = patternPanel.getNewPattern(name);
 
@@ -130,6 +130,10 @@ public class PatternSelector extends JPanel {
     }
 
     private void deletePattern() {
+        // Don't allow deletion of the last pattern
+        if (listModel.size() == 1) {
+            return;
+        }
         if (list.getSelectedIndex() != -1) {
             int index = list.getSelectedIndex();
             listModel.remove(index);
@@ -143,6 +147,20 @@ public class PatternSelector extends JPanel {
             list.setSelectedIndex(lastSelected);
             selectPattern(lastSelected);
         }
+        updateObservers();
     }
 
+    public List<Pattern> getPatterns() {
+        return this.patterns;
+    }
+
+    public void registerObserver(PatternEditor observer) {
+        observers.add(observer);
+    }
+
+    private void updateObservers() {
+        for (PatternEditor o : observers) {
+            o.update();
+        }
+    }
 }

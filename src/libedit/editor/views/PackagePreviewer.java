@@ -46,6 +46,7 @@ public class PackagePreviewer extends JPanel {
 
     public void setPackage(Pkg pkg) {
         this.pkg = pkg;
+        this.repaint();
     }
 
     public float getGridSpacing() {

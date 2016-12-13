@@ -1,12 +1,12 @@
 package libedit.editor.views.elements;
 
 import libedit.editor.models.patterns.Pattern;
-import libedit.editor.views.abstracts.AbstractPatternPanel;
+import libedit.editor.views.abstracts.AbstractPatternForm;
 
 @SuppressWarnings("serial")
-public class OutlinePanel extends AbstractPatternPanel {
+public class OutlineForm extends AbstractPatternForm {
 
-    public OutlinePanel() {
+    public OutlineForm() {
         super("Outline");
         // TODO Auto-generated constructor stub
     }

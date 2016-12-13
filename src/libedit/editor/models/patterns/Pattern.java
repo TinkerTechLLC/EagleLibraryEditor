@@ -5,10 +5,12 @@ abstract public class Pattern {
     private int        id;
     private static int idGen = 0;
     String             name;
+    PatternType        type;
 
-    public Pattern(String name) {
+    public Pattern(String name, PatternType type) {
         id = idGen++;
         this.name = name;
+        this.type = type;
     }
 
     public String getName() {
@@ -21,5 +23,9 @@ abstract public class Pattern {
 
     public int getID() {
         return id;
+    }
+
+    public PatternType getType() {
+        return type;
     }
 }

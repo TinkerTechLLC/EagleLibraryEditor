@@ -15,13 +15,13 @@ import javax.swing.SwingConstants;
 import libedit.eagle.models.factories.PatternFactory.PadCount;
 import libedit.editor.models.patterns.Pattern;
 import libedit.editor.models.patterns.ThruHolePattern;
-import libedit.editor.views.abstracts.AbstractPatternPanel;
+import libedit.editor.views.abstracts.AbstractPatternForm;
 import libedit.helpers.FloatField;
 import libedit.helpers.IntegerField;
 import net.miginfocom.swing.MigLayout;
 
 @SuppressWarnings("serial")
-public class ThruPanel extends AbstractPatternPanel {
+public class ThruForm extends AbstractPatternForm {
 
     private ThruHolePattern   thisPattern;
 
@@ -57,7 +57,7 @@ public class ThruPanel extends AbstractPatternPanel {
     /**
      * Create the panel.
      */
-    public ThruPanel() {
+    public ThruForm() {
 
         super("Through Hole");
 
@@ -89,7 +89,7 @@ public class ThruPanel extends AbstractPatternPanel {
             }
         });
         txtUpCount.setHorizontalAlignment(SwingConstants.CENTER);
-        txtUpCount.setText("0");
+        txtUpCount.setText("");
         padCountPanel.add(txtUpCount, "cell 0 3");
         txtUpCount.setColumns(10);
 
@@ -100,7 +100,7 @@ public class ThruPanel extends AbstractPatternPanel {
             }
         });
         txtBottomCount.setHorizontalAlignment(SwingConstants.CENTER);
-        txtBottomCount.setText("0");
+        txtBottomCount.setText("");
         padCountPanel.add(txtBottomCount, "cell 1 3");
         txtBottomCount.setColumns(10);
 
@@ -124,7 +124,7 @@ public class ThruPanel extends AbstractPatternPanel {
             }
         });
         txtArrayHeight.setHorizontalAlignment(SwingConstants.CENTER);
-        txtArrayHeight.setText("10.0");
+        txtArrayHeight.setText("");
         padLayoutPanel.add(txtArrayHeight, "cell 0 1");
         txtArrayHeight.setColumns(10);
 
@@ -134,7 +134,7 @@ public class ThruPanel extends AbstractPatternPanel {
                 updatePattern();
             }
         });
-        txtPitch.setText("2.54");
+        txtPitch.setText("");
         txtPitch.setHorizontalAlignment(SwingConstants.CENTER);
         padLayoutPanel.add(txtPitch, "cell 1 1");
         txtPitch.setColumns(10);
@@ -159,7 +159,7 @@ public class ThruPanel extends AbstractPatternPanel {
             }
         });
         txtHoleSize.setHorizontalAlignment(SwingConstants.CENTER);
-        txtHoleSize.setText("0.9");
+        txtHoleSize.setText("");
         padPropertyPanel.add(txtHoleSize, "cell 1 1,growx");
         txtHoleSize.setColumns(10);
 
@@ -169,7 +169,7 @@ public class ThruPanel extends AbstractPatternPanel {
                 updatePattern();
             }
         });
-        txtPadSize.setText("2.0");
+        txtPadSize.setText("");
         txtPadSize.setHorizontalAlignment(SwingConstants.CENTER);
         padPropertyPanel.add(txtPadSize, "cell 2 1,growx");
         txtPadSize.setColumns(10);
@@ -238,6 +238,7 @@ public class ThruPanel extends AbstractPatternPanel {
         thisPattern.setPadSize(this.txtPadSize.getVal());
         thisPattern.setPinPitch(this.txtPitch.getVal());
         thisPattern.setFirstPadSquare(isFirstPinSquare());
+        updateObservers();
     }
 
 }
