@@ -8,28 +8,28 @@ import libedit.eagle.models.objects.Pad;
 
 public class ThruHolePattern extends Pattern {
 
-    String    name;
     PadCount  padCount;
     List<Pad> pads;
     float     arrayHeight;
     float     pinPitch;
     float     holeSize;
     float     padSize;
-    boolean   firstPadSqure;
+    boolean   firstPadSquare;
+    boolean   topLayer;
 
     public ThruHolePattern(String name) {
-        this.name = name;
+        super(name);
         pads = new ArrayList<Pad>();
         padCount = new PadCount(0, 0, 0, 0);
         arrayHeight = 8.0f;
         pinPitch = 2.54f;
         holeSize = 0.9f;
-        firstPadSqure = false;
+        firstPadSquare = false;
     }
 
     public ThruHolePattern(String name, PadCount padCount, List<Pad> pads, float arrayHeight, float pinPitch,
             float holeSize, float padSize, boolean firstPadSqure) {
-        super();
+        super(name);
         this.name = name;
         this.padCount = padCount;
         this.pads = pads;
@@ -37,15 +37,7 @@ public class ThruHolePattern extends Pattern {
         this.pinPitch = pinPitch;
         this.holeSize = holeSize;
         this.padSize = padSize;
-        this.firstPadSqure = firstPadSqure;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        this.firstPadSquare = firstPadSqure;
     }
 
     public PadCount getPadCount() {
@@ -54,6 +46,7 @@ public class ThruHolePattern extends Pattern {
 
     public void setPadCount(PadCount padCount) {
         this.padCount = padCount;
+        System.out.println("New pad count -- " + this.padCount);
     }
 
     public List<Pad> getPads() {
@@ -96,12 +89,28 @@ public class ThruHolePattern extends Pattern {
         this.padSize = padSize;
     }
 
-    public boolean isFirstPadSqure() {
-        return firstPadSqure;
+    public boolean isFirstPadSquare() {
+        return firstPadSquare;
     }
 
-    public void setFirstPadSqure(boolean firstPadSqure) {
-        this.firstPadSqure = firstPadSqure;
+    public void setFirstPadSquare(boolean firstPadSqure) {
+        this.firstPadSquare = firstPadSqure;
+    }
+
+    public boolean isTopLayer() {
+        return topLayer;
+    }
+
+    public void setTopLayer(boolean topLayer) {
+        this.topLayer = topLayer;
+    }
+
+    @Override
+    public String toString() {
+        String ret = "Name: " + name + " ID: " + this.getID() + "\nPad Count -- " + padCount.toString()
+                + "\nArray Height: " + arrayHeight + "\nPin Pitch: " + pinPitch + "\nHole Size: " + holeSize
+                + "\nPad Size: " + padSize + "\nFirst Pad Square: " + firstPadSquare + "\nTop layer: " + topLayer;
+        return ret;
     }
 
 }

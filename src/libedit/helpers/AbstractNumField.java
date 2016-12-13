@@ -12,7 +12,6 @@ public abstract class AbstractNumField<T> extends JTextField {
     protected String              lastText = "";
     protected T                   maxVal;
     protected T                   minVal;
-    protected T                   val;
 
     protected AbstractNumField(T minVal, T maxVal) {
         this.minVal = minVal;
@@ -31,8 +30,7 @@ public abstract class AbstractNumField<T> extends JTextField {
     abstract protected void checkFormat();
 
     public void setVal(T val) {
-        this.val = val;
-        this.setText(this.val.toString());
+        this.setText(val.toString());
         this.checkFormat();
     };
 

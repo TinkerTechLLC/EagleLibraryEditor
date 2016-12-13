@@ -71,7 +71,6 @@ public class MainDialog extends JDialog {
     private final ButtonGroup layerButtons          = new ButtonGroup();
     private JRadioButton      rdbtnTop;
     private FloatField        gridSize;
-    // private JComboBox<String> comboBox;
 
     /**
      * Launch the application.
@@ -90,8 +89,7 @@ public class MainDialog extends JDialog {
      * Create the dialog.
      */
     public MainDialog() {
-        setResizable(false);
-        setBounds(100, 100, 700, 550);
+        setBounds(100, 100, 800, 719);
         getContentPane().setLayout(new BorderLayout());
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -118,13 +116,11 @@ public class MainDialog extends JDialog {
                 }
             }
         }
-        contentPanel
-                .setLayout(
-                        new MigLayout("", "[10px,grow][325:325:325]", "[35:35:35][325:325px:325px][grow]"));
+        contentPanel.setLayout(new MigLayout("", "[10px,grow][325:325:325]", "[35:n:60][325:325px:325px][][grow]"));
         {
             JPanel panel = new JPanel();
-            contentPanel.add(panel, "cell 0 0 2 1,grow");
-            panel.setLayout(new MigLayout("", "[74px][86px,grow]", "[20px,grow]"));
+            contentPanel.add(panel, "cell 0 0 2 1,growx,aligny center");
+            panel.setLayout(new MigLayout("ins 0", "[74px][86px,grow]", "[20px,grow]"));
             {
                 JLabel lblPackageName = new JLabel("Package Name:");
                 panel.add(lblPackageName, "cell 0 0,alignx left,aligny center");
@@ -145,7 +141,7 @@ public class MainDialog extends JDialog {
         }
         {
             JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-            contentPanel.add(tabbedPane, "cell 0 1,grow");
+            contentPanel.add(tabbedPane, "cell 0 1 1 2,grow");
             {
                 JPanel outlinePanel = new JPanel();
                 tabbedPane.addTab("Outline", null, outlinePanel, null);
@@ -184,9 +180,8 @@ public class MainDialog extends JDialog {
             {
                 SMDPanel smdPanel = new SMDPanel();
                 tabbedPane.addTab("SMD", null, smdPanel, null);
-                smdPanel.setLayout(
-                        new MigLayout("", "[125px][50,grow][50,grow][50,grow,fill]",
-                                "[grow][][][][][][][][][][][][][][grow]"));
+                smdPanel.setLayout(new MigLayout("", "[125px][50,grow][50,grow][50,grow,fill]",
+                        "[grow][][][][][][][][][][][][][][grow]"));
                 {
                     PatternSelector smdPatternSelector = new PatternSelector(smdPanel);
                     smdPanel.add(smdPatternSelector, "cell 0 0 1 15,grow");
@@ -371,7 +366,7 @@ public class MainDialog extends JDialog {
             contentPanel.add(previewer, "cell 1 1,grow");
             {
                 JPanel panel = new JPanel();
-                contentPanel.add(panel, "cell 0 2,grow");
+                contentPanel.add(panel, "cell 0 3,grow");
                 panel.setLayout(new MigLayout("", "[][grow]", "[][]"));
                 {
                     JLabel lblUnits = new JLabel("Units");
@@ -402,7 +397,7 @@ public class MainDialog extends JDialog {
             {
                 JPanel messagePaneContainer = new JPanel();
                 messagePaneContainer.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-                contentPanel.add(messagePaneContainer, "cell 1 2,grow");
+                contentPanel.add(messagePaneContainer, "cell 1 3,grow");
                 messagePaneContainer.setLayout(new CardLayout(0, 0));
                 {
                     JTextPane messagePane = new JTextPane();

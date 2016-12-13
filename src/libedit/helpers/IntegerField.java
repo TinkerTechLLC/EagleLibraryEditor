@@ -51,11 +51,6 @@ public class IntegerField extends AbstractNumField<Integer> {
 
     @Override
     public Integer getVal() {
-        if (val != null) {
-            return val;
-        }
-        else {
-            return Integer.parseInt(this.getText());
-        }
+        return Integer.parseInt(this.getText());
     }
 }
