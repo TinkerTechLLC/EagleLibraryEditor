@@ -8,6 +8,7 @@ import libedit.eagle.models.containers.Pkg;
 import libedit.editor.models.patterns.Pattern;
 import libedit.editor.models.patterns.SMDPattern;
 import libedit.editor.models.patterns.ThruHolePattern;
+import libedit.editor.models.patterns.WirePattern;
 import libedit.editor.views.PackagePreviewer;
 import libedit.editor.views.abstracts.PatternEditor;
 
@@ -25,6 +26,8 @@ public class PackageBuilder {
             for (Pattern p : m.getPatterns()) {
                 switch (p.getType()) {
                 case WIRE:
+                    WirePattern wirePattern = (WirePattern) p;
+                    pkgChildren.addAll(wirePattern.getWires());
                     break;
                 case SMD:
                     SMDPattern smdPattern = (SMDPattern) p;
