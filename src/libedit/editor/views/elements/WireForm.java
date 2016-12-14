@@ -74,7 +74,7 @@ public class WireForm extends AbstractPatternForm {
         JLabel lblYPosition = new JLabel("Y Position");
         horizontalPanel.add(lblYPosition, "cell 1 0,alignx trailing");
 
-        txtHorizY = new FloatField(2, 0, Float.MAX_VALUE);
+        txtHorizY = new FloatField(2);
         txtHorizY.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 updatePattern();
@@ -103,7 +103,7 @@ public class WireForm extends AbstractPatternForm {
         JLabel lblXPosition = new JLabel("X Position");
         verticalPanel.add(lblXPosition, "cell 1 0,alignx trailing");
 
-        txtVertX = new FloatField(2, 0, Float.MAX_VALUE);
+        txtVertX = new FloatField(2);
         txtVertX.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 updatePattern();
