@@ -26,6 +26,7 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 
 import libedit.eagle.models.LibraryParser;
+import libedit.eagle.models.containers.Pkg;
 import libedit.eagle.models.enums.Unit;
 import libedit.eagle.models.factories.PackageBuilder;
 import libedit.editor.fileio.FileChooser;
@@ -33,6 +34,7 @@ import libedit.editor.models.gui.EditorSettings;
 import libedit.editor.views.abstracts.PatternEditor;
 import libedit.editor.views.elements.SMDForm;
 import libedit.editor.views.elements.ThruForm;
+import libedit.editor.views.elements.WireForm;
 import libedit.helpers.FloatField;
 import net.miginfocom.swing.MigLayout;
 
@@ -42,8 +44,6 @@ public class MainDialog extends JDialog {
     private final JPanel     contentPanel   = new JPanel();
     private PackagePreviewer previewer      = new PackagePreviewer();
     private JTextField       txtPackageName;
-    private FloatField       textPackageHeight;
-    private FloatField       textPackageWidth;
     private FloatField       gridSize;
     private PackageBuilder   packageBuilder = new PackageBuilder();
 
@@ -64,7 +64,8 @@ public class MainDialog extends JDialog {
      * Create the dialog.
      */
     public MainDialog() {
-        setBounds(100, 100, 813, 719);
+        setResizable(false);
+        setBounds(100, 100, 700, 625);
         getContentPane().setLayout(new BorderLayout());
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -79,11 +80,13 @@ public class MainDialog extends JDialog {
                         public void actionPerformed(ActionEvent arg0) {
                             // Don't open the chooser is there's no package to
                             // export
-                            if (packageBuilder.getPackage() != null) {
+                            Pkg pkg = packageBuilder.getPackage();
+                            if (pkg != null) {
                                 // If the file chooser was not aborted
                                 if (new FileChooser().showChooser()) {
                                     if (new File(FileChooser.getPath()).exists()) {
-                                        LibraryParser.savePackageToLibrary(packageBuilder.getPackage(),
+                                        pkg.setName(txtPackageName.getText());
+                                        LibraryParser.savePackageToLibrary(pkg,
                                                 FileChooser.getPath());
                                     }
                                     else {
@@ -97,7 +100,8 @@ public class MainDialog extends JDialog {
                 }
             }
         }
-        contentPanel.setLayout(new MigLayout("", "[::375][325:325:325][grow]", "[35:n:60][325:325px:325px][][grow]"));
+        contentPanel.setLayout(
+                new MigLayout("", "[::375][325:325:325][grow]", "[35:n:60][325:325px:325px][:25:100][][5,grow]"));
         {
             JPanel panel = new JPanel();
             contentPanel.add(panel, "cell 0 0 2 1,growx,aligny center");
@@ -124,39 +128,17 @@ public class MainDialog extends JDialog {
             JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
             contentPanel.add(tabbedPane, "cell 0 1 1 2,grow");
             {
-                JPanel outlinePanel = new JPanel();
-                tabbedPane.addTab("Outline", null, outlinePanel, null);
-                outlinePanel.setLayout(new MigLayout("", "[50][][50][]", "[][]"));
-                {
-                    JLabel lblPackageHeight = new JLabel("Package Height");
-                    outlinePanel.add(lblPackageHeight, "cell 0 0");
-                }
-                {
-                    JLabel lblPackageWidth = new JLabel("Package Width");
-                    outlinePanel.add(lblPackageWidth, "cell 2 0");
-                }
-                {
-                    textPackageHeight = new FloatField(2, 0, Float.MAX_VALUE);
-                    textPackageHeight.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent arg0) {
-                            updatePackage();
-                        }
-                    });
-                    textPackageHeight.setText("8.0");
-                    outlinePanel.add(textPackageHeight, "cell 0 1,growx");
-                    textPackageHeight.setColumns(10);
-                }
-                {
-                    textPackageWidth = new FloatField(2, 0, Float.MAX_VALUE);
-                    textPackageWidth.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent e) {
-                            updatePackage();
-                        }
-                    });
-                    textPackageWidth.setText("8.0");
-                    outlinePanel.add(textPackageWidth, "cell 2 1,growx");
-                    textPackageWidth.setColumns(10);
-                }
+                WireForm wireForm = new WireForm();
+                PatternEditor outlineEditor = new PatternEditor(wireForm);
+                outlineEditor.addComponentListener(new ComponentAdapter() {
+                    @Override
+                    public void componentShown(ComponentEvent arg0) {
+                        outlineEditor.init();
+                    }
+                });
+                packageBuilder.registerModel(outlineEditor);
+                tabbedPane.addTab("Outline", null, outlineEditor, null);
+                outlineEditor.setLayout(new MigLayout("", "[50][grow]", "[][]"));
             }
             {
                 SMDForm smdPanel = new SMDForm();
@@ -190,39 +172,9 @@ public class MainDialog extends JDialog {
             previewer.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
             contentPanel.add(previewer, "cell 1 1,grow");
             {
-                JPanel panel = new JPanel();
-                contentPanel.add(panel, "cell 0 3,grow");
-                panel.setLayout(new MigLayout("", "[][grow]", "[][]"));
-                {
-                    JLabel lblUnits = new JLabel("Units");
-                    panel.add(lblUnits, "cell 0 0,alignx trailing");
-                }
-                {
-                    JComboBox<Object> unitSelect = new JComboBox<Object>(Unit.stringValues());
-                    unitSelect.setEnabled(false);
-                    unitSelect.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent arg0) {
-                            Unit newUnit = Unit.parseString((String) unitSelect.getSelectedItem());
-                            EditorSettings.getInstance().setUnit(newUnit);
-                        }
-                    });
-                    panel.add(unitSelect, "cell 1 0,growx");
-                }
-                {
-                    JLabel lblGridSize = new JLabel("Grid Size");
-                    panel.add(lblGridSize, "cell 0 1,alignx trailing");
-                }
-                {
-                    gridSize = new FloatField(2, 0, Float.MAX_VALUE);
-                    gridSize.setText("1.0");
-                    panel.add(gridSize, "cell 1 1,growx");
-                    gridSize.setColumns(10);
-                }
-            }
-            {
                 JPanel messagePaneContainer = new JPanel();
                 messagePaneContainer.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-                contentPanel.add(messagePaneContainer, "cell 1 3,grow");
+                contentPanel.add(messagePaneContainer, "cell 1 2,grow");
                 messagePaneContainer.setLayout(new CardLayout(0, 0));
                 {
                     JTextPane messagePane = new JTextPane();
@@ -258,9 +210,37 @@ public class MainDialog extends JDialog {
 
         // Register observers with EditorSettings model
         EditorSettings es = EditorSettings.getInstance();
-        es.registerUnitObserver(textPackageHeight);
-        es.registerUnitObserver(textPackageWidth);
         es.registerGridObserver(previewer);
+        {
+            JPanel panel = new JPanel();
+            contentPanel.add(panel, "cell 0 3,grow");
+            panel.setLayout(new MigLayout("", "[][grow]", "[][]"));
+            {
+                JLabel lblUnits = new JLabel("Units");
+                panel.add(lblUnits, "cell 0 0,alignx trailing");
+            }
+            {
+                JComboBox<Object> unitSelect = new JComboBox<Object>(Unit.stringValues());
+                unitSelect.setEnabled(false);
+                unitSelect.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent arg0) {
+                        Unit newUnit = Unit.parseString((String) unitSelect.getSelectedItem());
+                        EditorSettings.getInstance().setUnit(newUnit);
+                    }
+                });
+                panel.add(unitSelect, "cell 1 0,growx");
+            }
+            {
+                JLabel lblGridSize = new JLabel("Grid Size");
+                panel.add(lblGridSize, "cell 0 1,alignx trailing");
+            }
+            {
+                gridSize = new FloatField(2, 0, Float.MAX_VALUE);
+                gridSize.setText("1.0");
+                panel.add(gridSize, "cell 1 1,growx");
+                gridSize.setColumns(10);
+            }
+        }
         es.registerUnitObserver(gridSize);
     }
 

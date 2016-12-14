@@ -63,7 +63,7 @@ public class ThruForm extends AbstractPatternForm {
 
         thisPattern = new ThruHolePattern("Default");
 
-        setLayout(new MigLayout("", "[grow,center]", "[][][][][][grow]"));
+        setLayout(new MigLayout("", "[grow,center]", "[][][][][][200,grow]"));
 
         padCountPanel = new JPanel();
         add(padCountPanel, "cell 0 0,alignx center,growy");

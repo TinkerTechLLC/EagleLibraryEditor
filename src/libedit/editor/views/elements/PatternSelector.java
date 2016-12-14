@@ -42,7 +42,7 @@ public class PatternSelector extends JPanel {
 
         this.patternPanel = patternPanel;
         setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-        setLayout(new MigLayout("ins 0", "[175,grow]", "[][200:n,grow][][][][]"));
+        setLayout(new MigLayout("ins 0", "[175,grow]", "[][200:400,grow][][][][]"));
 
         JLabel lblPattern = new JLabel(patternPanel.getType() + " Pattern");
         add(lblPattern, "cell 0 0,alignx center");
@@ -57,13 +57,6 @@ public class PatternSelector extends JPanel {
         list.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
         add(list, "cell 0 1,grow");
 
-        JButton btnAddPattern = new JButton("Add Pattern");
-        btnAddPattern.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                addPattern();
-            }
-        });
-
         txtPatternName = new JTextField();
         txtPatternName.setHorizontalAlignment(SwingConstants.CENTER);
         txtPatternName.setText("New Pattern Name");
@@ -76,8 +69,15 @@ public class PatternSelector extends JPanel {
                 renamePattern();
             }
         });
-        add(btnRenamePattern, "cell 0 3,growx");
-        add(btnAddPattern, "cell 0 4,growx");
+
+        JButton btnAddPattern = new JButton("Add Pattern");
+        btnAddPattern.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                addPattern();
+            }
+        });
+        add(btnAddPattern, "cell 0 3,growx");
+        add(btnRenamePattern, "cell 0 4,growx");
 
         JButton btnDeletePattern = new JButton("Delete Pattern");
         btnDeletePattern.addActionListener(new ActionListener() {
