@@ -103,6 +103,7 @@ public class Pad extends EagleObj {
     @Override
     public Element toXML() {
         Element xml = new Element("pad");
+        xml.setAttribute("name", name);
         xml.setAttribute("x", Float.toString(x));
         xml.setAttribute("y", Float.toString(y));
         xml.setAttribute("drill", Float.toString(drill));
